@@ -1,0 +1,31 @@
+name: Test
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Build
+        # VITE_* values aren't needed for a build-correctness check — Vite
+        # just leaves them undefined in the bundle when unset, same as any
+        # other unset env var. Real values only matter for the Docker image
+        # built in deploy.yml, which pulls them from repo secrets.
+        run: npm run build
