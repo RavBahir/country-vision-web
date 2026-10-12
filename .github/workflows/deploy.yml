@@ -26,7 +26,7 @@ jobs:
 
       - name: Compute lowercase image name
         id: image
-        run: echo "name=${REGISTRY}/ravbahir/country-energy-limited" >> "$GITHUB_OUTPUT"
+        run: echo "name=${REGISTRY}/ravbahir/country-vision" >> "$GITHUB_OUTPUT"
 
       - name: Log in to GHCR
         uses: docker/login-action@v3
@@ -45,7 +45,6 @@ jobs:
           target: runner
           push: true
           build-args: |
-            NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=${{ secrets.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY }}
             NEXT_PUBLIC_SITE_DOMAIN=${{ vars.NEXT_PUBLIC_SITE_DOMAIN }}
           tags: |
             ${{ steps.image.outputs.name }}:latest
@@ -70,7 +69,7 @@ jobs:
           envs: GH_TOKEN,GH_ACTOR
           script: |
             set -e
-            cd "${{ secrets.DEPLOY_PATH || '/opt/country-energy-limited' }}"
+            cd "${{ secrets.DEPLOY_PATH || '/opt/country-vision' }}"
             echo "$GH_TOKEN" | docker login ${{ env.REGISTRY }} -u "$GH_ACTOR" --password-stdin
             docker compose -f docker-compose.prod.yml pull web
             docker compose -f docker-compose.prod.yml up -d web
