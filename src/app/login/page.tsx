@@ -14,7 +14,9 @@ import {
 /* ------------------------------------------------------------------ */
 
 const BRAND = "Country Vision";
-const PHONE = "+234 800 123 4567";
+export const PHONE = "+233 24 264 3330";
+export const WHATSAPP_PHONE = "+233242643330";
+export const EMAIL = "info@countryvision.com";
 
 type Mode = "signin" | "signup";
 
@@ -49,8 +51,8 @@ function Field({ label, icon: Icon, type = "text", placeholder, autoComplete, re
   const id = useId();
   return (
     <div>
-      <label htmlFor={id} className="mb-2 block text-sm font-medium">{label}</label>
-      <div className="flex h-14 items-center gap-3 rounded-2xl border border-[#1F1A15]/10 bg-[#F6EFE4] px-4 focus-within:border-[#8A6A4A] focus-within:bg-white">
+      <label htmlFor={id} className="mb-1 block text-sm font-medium">{label}</label>
+      <div className="flex h-12 items-center gap-3 rounded-2xl border border-[#1F1A15]/10 bg-[#F6EFE4] px-4 focus-within:border-[#8A6A4A] focus-within:bg-white">
         <Icon size={17} className="shrink-0 text-[#1F1A15]/45" aria-hidden />
         <input
           id={id}
@@ -119,7 +121,7 @@ function AuthCard() {
             role="tab"
             aria-selected={mode === m}
             onClick={() => switchMode(m)}
-            className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors sm:px-7 ${
+            className={`rounded-full hover:cursor-pointer px-5 py-2.5 text-sm font-medium transition-colors sm:px-7 ${
               mode === m ? "bg-[#1F1A15] text-white" : "text-[#1F1A15]/70 hover:text-[#1F1A15]"
             }`}
           >
@@ -128,16 +130,16 @@ function AuthCard() {
         ))}
       </div>
 
-      <h1 id="auth-title" className="mt-8 text-4xl font-semibold tracking-tight">
+      <h1 id="auth-title" className="mt-4 text-4xl font-semibold tracking-tight">
         {isSignIn ? "Welcome back" : "Create your account"}
       </h1>
-      <p className="mt-3 max-w-lg text-[15px] leading-relaxed text-[#1F1A15]/60">
+      <p className="mt-1 max-w-lg text-sm leading-relaxed text-[#1F1A15]/60">
         {isSignIn
           ? "Sign in to book appointments and order spectacles with your prescription on file."
           : "Save your prescription, track orders, and book faster eye checkups."}
       </p>
 
-      <form onSubmit={onSubmit} className="mt-7 grid gap-5">
+      <form onSubmit={onSubmit} className="mt-4 grid gap-5">
         {!isSignIn && <Field label="Full name" name="name" icon={User} placeholder="e.g. Amara Okafor" autoComplete="name" />}
         {isSignIn ? (
           <Field label="Email or phone number" name="identifier" icon={User} placeholder="e.g. amara@example.com" autoComplete="username" />
@@ -153,7 +155,7 @@ function AuthCard() {
           <div className="flex items-center justify-between gap-3 text-sm">
             <label className="flex cursor-pointer items-center gap-3">
               <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} className="peer sr-only" />
-              <span className="grid h-6 w-6 place-items-center rounded-md border border-[#1F1A15]/30 text-white peer-checked:border-[#1F1A15] peer-checked:bg-[#1F1A15] peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#8A6A4A]">
+              <span className="grid h-5 w-5 place-items-center rounded-sm border border-[#1F1A15]/30 text-white peer-checked:border-[#1F1A15] peer-checked:bg-[#1F1A15] peer-focus-visible:outline peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#8A6A4A]">
                 {remember && <Check size={14} strokeWidth={3} />}
               </span>
               Remember me
@@ -162,7 +164,7 @@ function AuthCard() {
           </div>
         )}
 
-        <button type="submit" className="mt-1 flex h-14 items-center justify-center gap-2 rounded-full bg-[#1F1A15] text-[15px] font-medium text-white transition-colors hover:bg-[#3a3027]">
+        <button type="submit" className=" flex h-12 items-center justify-center gap-2 rounded-full bg-[#1F1A15] text-[15px] font-medium text-white transition-colors hover:bg-[#3a3027]">
           {isSignIn ? "Sign in to my account" : "Create my account"} <ArrowRight size={17} />
         </button>
         {status && <p role="status" className="rounded-xl bg-[#F1E7D8] px-4 py-3 text-sm">{status}</p>}
@@ -173,10 +175,10 @@ function AuthCard() {
         <span className="h-px flex-1 bg-[#E6D9C6]" /> or continue with <span className="h-px flex-1 bg-[#E6D9C6]" />
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
-        <button type="button" className="flex h-14 items-center justify-center gap-2.5 rounded-full border border-[#E6D9C6] bg-[#FBF6EE] text-[15px] font-medium hover:bg-[#F1E7D8]">
+        <button type="button" className="flex h-12 items-center justify-center gap-2.5 rounded-full border border-[#E6D9C6] bg-[#FBF6EE] text-[15px] font-medium hover:bg-[#F1E7D8]">
           <MessageCircle size={18} /> WhatsApp OTP
         </button>
-        <button type="button" className="flex h-14 items-center justify-center gap-2.5 rounded-full border border-[#E6D9C6] bg-[#FBF6EE] text-[15px] font-medium hover:bg-[#F1E7D8]">
+        <button type="button" className="flex h-12 items-center justify-center gap-2.5 rounded-full border border-[#E6D9C6] bg-[#FBF6EE] text-[15px] font-medium hover:bg-[#F1E7D8]">
           <Globe size={18} /> Google
         </button>
       </div>
@@ -188,12 +190,12 @@ function AuthCard() {
           {isSignIn ? (
             <>
               <b className="font-semibold text-[#1F1A15]">New here?</b> Create a free account to save your prescription, track orders, and book faster checkups.{" "}
-              <button type="button" onClick={() => switchMode("signup")} className="border-b border-[#8A6A4A]/50 font-medium text-[#1F1A15]">Get started</button>
+              <button type="button" onClick={() => switchMode("signup")} className="border-b border-[#8A6A4A]/50 font-medium text-[#1F1A15] hover:cursor-pointer">Get started</button>
             </>
           ) : (
             <>
               <b className="font-semibold text-[#1F1A15]">Already have an account?</b>{" "}
-              <button type="button" onClick={() => switchMode("signin")} className="border-b border-[#8A6A4A]/50 font-medium text-[#1F1A15]">Sign in instead</button>
+              <button type="button" onClick={() => switchMode("signin")} className="border-b border-[#8A6A4A]/50 font-medium text-[#1F1A15] hover:cursor-pointer">Sign in instead</button>
             </>
           )}
         </p>
@@ -201,7 +203,7 @@ function AuthCard() {
 
       <p className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-[#1F1A15]/55">
         <span className="flex items-center gap-2"><Lock size={14} /> 256-bit encrypted</span>
-        <a href="https://wa.me/2348001234567" className="flex items-center gap-2 hover:text-[#1F1A15]"><Headset size={14} /> Need help? Chat with us</a>
+        <a href={`https://wa.me/${WHATSAPP_PHONE}`} className="flex items-center gap-2 hover:text-[#1F1A15]"><Headset size={14} /> Need help? Chat with us</a>
       </p>
     </section>
   );
@@ -216,15 +218,15 @@ function BrandPanel() {
     <aside className="relative flex min-h-140 flex-col overflow-hidden rounded-[2rem] bg-[#4A3320] text-white lg:min-h-0">
       {/* photo slot: add /public/images/portal-hero.jpg */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/images/portal-hero.jpg" alt="" className="absolute inset-0 h-full w-full object-cover" onError={(e) => { e.currentTarget.style.display = "none"; }} />
+      <img src="/assets/images/login-banner.png" alt="" className="absolute inset-0 h-full w-full object-cover" onError={(e) => { e.currentTarget.style.display = "none"; }} />
       <div className="absolute inset-0 bg-linear-to-b from-black/30 via-black/10 to-black/80" />
 
-      <div className="relative flex items-start justify-between p-8 sm:p-14 sm:pb-0">
-        <Link href="/" className="flex items-center gap-4">
-          <span className="grid h-14 w-14 place-items-center rounded-2xl bg-white text-[#1F1A15]"><Eye size={24} /></span>
+      <div className="relative flex items-start justify-between p-4 sm:p-10 sm:pb-0">
+        <Link href="/" className="flex items-center gap-2">
+         <img src="/assets/images/logo.png" className="w-9 h-9" alt={BRAND} />
           <span className="leading-none">
-            <span className="block text-xl font-semibold">{BRAND}</span>
-            <span className="mt-1.5 block text-xs tracking-[0.3em] text-white/70 uppercase">Vision Care</span>
+            <span className="block text-base font-semibold">{BRAND}</span>
+            <span className=" block text-xs tracking-[0.3em] text-white/70 uppercase">Vision Care</span>
           </span>
         </Link>
         <span className="rounded-full border border-white/30 bg-black/20 px-4 py-2 text-sm font-medium backdrop-blur">Patient Portal</span>
@@ -262,15 +264,15 @@ export default function LoginPage() {
       <div className="mx-auto max-w-7xl px-5 py-8">
         {/* top bar */}
         <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-[#1F1A15]/65">
-          <Link href="/" className="flex items-center gap-2.5 text-base hover:text-[#1F1A15]"><ArrowLeft size={17} /> Back to homepage</Link>
+          <Link href="/" className="flex items-center gap-2.5 text-sm hover:text-[#1F1A15]"><ArrowLeft size={17} /> Back to homepage</Link>
           <div className="flex items-center gap-5">
-            <a href="tel:+2348001234567" className="flex items-center gap-2 hover:text-[#1F1A15]"><Phone size={15} /> {PHONE}</a>
-            <a href="https://wa.me/2348001234567" className="flex items-center gap-2 hover:text-[#1F1A15]"><MessageCircle size={15} /> WhatsApp help</a>
+            <a href="tel:+2348001234567" className="flex  text-sm items-center gap-2 hover:text-[#1F1A15]"><Phone size={15} /> {PHONE}</a>
+            <a href={`https://wa.me/${WHATSAPP_PHONE}`} className="flex items-center gap-2  text-sm hover:text-[#1F1A15]"><MessageCircle size={15} /> WhatsApp help</a>
           </div>
         </div>
 
         {/* main grid */}
-        <main className="mt-8 grid gap-6 lg:grid-cols-2">
+        <main className="mt-4 grid gap-4 lg:grid-cols-2">
           <BrandPanel />
           <AuthCard />
         </main>
