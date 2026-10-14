@@ -114,7 +114,7 @@ export default function PortalShell({ children }: { children: ReactNode }) {
         {/* desktop sidebar */}
         <aside className="sticky top-6 hidden h-[calc(100vh-3rem)] w-64 shrink-0 flex-col gap-8 rounded-[2rem] border border-[#E6D9C6] bg-white p-5 lg:flex">
           <Brand />
-          <NavList pathname={pathname} />
+          <NavList pathname={pathname ?? ""} />
           <SidebarFooter />
         </aside>
 
@@ -174,7 +174,7 @@ export default function PortalShell({ children }: { children: ReactNode }) {
               <Brand />
               <button onClick={() => setDrawer(false)} aria-label="Close menu" className="grid h-10 w-10 place-items-center rounded-full border border-[#E6D9C6]"><X size={17} /></button>
             </div>
-            <NavList pathname={pathname} />
+            <NavList pathname={pathname ?? ""} />
             <SidebarFooter />
           </div>
         </div>

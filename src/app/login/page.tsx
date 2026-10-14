@@ -8,6 +8,8 @@ import {
   User, Globe, Mail,
   type LucideIcon,
 } from "lucide-react";
+import { allRoutes } from "@/routes/routes";
+import { useRouter } from "next/navigation";
 
 /* ------------------------------------------------------------------ */
 /* Content                                                             */
@@ -102,6 +104,7 @@ function AuthCard() {
   const [remember, setRemember] = useState(true);
   const [status, setStatus] = useState<string | null>(null);
   const isSignIn = mode === "signin";
+  const router = useRouter()
 
   const switchMode = (m: Mode) => { setMode(m); setStatus(null); };
 
@@ -109,6 +112,7 @@ function AuthCard() {
     e.preventDefault();
     // TODO: replace with your auth call (NextAuth, Supabase, custom API...)
     setStatus(isSignIn ? "Signing you in…" : "Account created. Check your email to verify it.");
+    router.push(allRoutes.PORTAL + allRoutes.DASHBOARD)
   };
 
   return (
