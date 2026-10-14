@@ -1,14 +1,28 @@
-import { Badge, Button, Card, EmptyState, StepTracker } from "@/components/portal/UI"
-import { IFrameTab } from "./common"
-import { PackageSearch } from "lucide-react"
-import { fmtDate, money } from "@/lib/format"
-import { CatalogRequest, REQUEST_STEPS } from "@/lib/portal-data"
-import { SetStateAction } from "react"
+import {
+  Badge,
+  Button,
+  Card,
+  EmptyState,
+  StepTracker,
+} from "@/components/portal/UI";
+import { IFrameTab } from "./common";
+import { PackageSearch } from "lucide-react";
+import { fmtDate, money } from "@/lib/format";
+import { CatalogRequest, REQUEST_STEPS } from "@/lib/portal-data";
+import { SetStateAction } from "react";
 
-const CatalogRequestsTab = ({tab, requests, setTab}:{tab: IFrameTab, setTab: (value: SetStateAction<IFrameTab>) => void, requests: CatalogRequest[]}) => {
+const CatalogRequestsTab = ({
+  tab,
+  requests,
+  setTab,
+}: {
+  tab: IFrameTab;
+  setTab: (value: SetStateAction<IFrameTab>) => void;
+  requests: CatalogRequest[];
+}) => {
   return (
     <>
-        {tab === "requests" &&
+      {tab === "requests" &&
         (requests.length === 0 ? (
           <EmptyState
             icon={PackageSearch}
@@ -59,7 +73,7 @@ const CatalogRequestsTab = ({tab, requests, setTab}:{tab: IFrameTab, setTab: (va
           </ul>
         ))}
     </>
-  )
-}
+  );
+};
 
-export default CatalogRequestsTab
+export default CatalogRequestsTab;

@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  PageHeader,
-  Segmented,
-  Toast
-} from "@/components/portal/UI";
+import { PageHeader, Segmented, Toast } from "@/components/portal/UI";
 import { TODAY, toISO } from "@/lib/format";
 import {
   DEFAULT_LENS,
@@ -14,7 +10,7 @@ import {
   lensSummary,
   type CatalogRequest,
   type Frame,
-  type LensConfig
+  type LensConfig,
 } from "@/lib/portal-data";
 import { useMemo, useState } from "react";
 import CatalogFrameTab from "./CatalogFrameTab";
@@ -98,6 +94,7 @@ export default function CatalogPage() {
 
       {/* ---------- FRAMES ---------- */}
       <CatalogFrameTab
+        tab={tab}
         frames={frames}
         query={query}
         setCustomizing={setCustomizing}

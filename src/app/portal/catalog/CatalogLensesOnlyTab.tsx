@@ -1,5 +1,5 @@
 import { Button, Card, inputCls, Kicker } from "@/components/portal/UI";
-import React, { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { IFrameTab, LensConfigurator } from "./common";
 import { LensConfig, lensPrice, lensSummary } from "@/lib/portal-data";
 import { money } from "@/lib/format";
