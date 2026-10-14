@@ -83,10 +83,10 @@ export default function DashboardPage() {
         description="Here's a quick look at your appointments, orders and prescription."
         actions={
           <>
-            <ButtonLink href={allRoutes.APPOINTMENTS}>
+            <ButtonLink href={allRoutes.PORTAL + allRoutes.APPOINTMENTS}>
               Book an appointment <ArrowRight size={15} />
             </ButtonLink>
-            <ButtonLink href={allRoutes.CATALOG} variant="secondary">
+            <ButtonLink href={allRoutes.PORTAL + allRoutes.CATALOG} variant="secondary">
               Browse catalog
             </ButtonLink>
           </>

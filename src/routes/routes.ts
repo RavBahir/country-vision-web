@@ -6,6 +6,7 @@ export const allRoutes = Object.freeze({
   DASHBOARD: "/dashboard",
   APPOINTMENTS: "/appointments",
   CHECKUPS: "/checkups",
+  PROFILE: "/profile",
   CATALOG: "/catalog",
   TRANSACTIONS: "/transactions",
   CALENDAR: "/calendar",

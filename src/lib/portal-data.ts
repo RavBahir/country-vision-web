@@ -24,6 +24,262 @@ export const TIME_SLOTS = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
 export type ApptType = (typeof APPT_TYPES)[number];
 export type ApptStatus = "confirmed" | "pending" | "completed" | "cancelled";
 
+export const ACCOUNT: AccountState = {
+  hasPassword: true,
+  googleLinked: true,
+  googleEmail: "amara.okafor@gmail.com",
+  passwordChangedDaysAgo: 94,
+};
+
+/** ISO date of the patient's first visit. */
+export const MEMBER_SINCE = "2023-09-14";
+
+export const PREFERENCES: Preferences = {
+  channels: {
+    appointments: { whatsapp: true, sms: false, email: true },
+    checkups: { whatsapp: true, sms: false, email: false },
+    orders: { whatsapp: true, sms: false, email: true },
+    payments: { whatsapp: false, sms: false, email: true },
+    offers: { whatsapp: false, sms: false, email: false },
+  },
+  reminderLead: "day_before",
+  preferredBranchId: "b1", // "Country Vision, Lekki"
+  preferredClinician: "Dr. Ngozi Eze", // or "any"
+  fulfilment: "pickup",
+  marketingOptIn: false,
+};
+
+export const PROFILE: ProfileData = {
+  name: "Amara Okafor",
+  email: "amara.okafor@gmail.com",
+  phone: "+234 803 555 0142",
+  emailVerified: true,
+  phoneVerified: true,
+  dateOfBirth: "1994-03-14",
+  gender: "female",
+  address: "12 Awolowo Road, Ikoyi",
+  city: "Lagos",
+  emergencyContactName: "Chidi Okafor",
+  emergencyContactPhone: "+234 800 111 2233",
+  medicalHistory: "Mild hay fever in the rainy season. No known drug allergies.",
+};
+
+export const SESSIONS: AuthSessionInfo[] = [
+  { id: "s1", device: "desktop", browser: "Chrome 141", os: "Windows 11", location: "Lagos, Nigeria", ip: "102.89.•••.•••", method: "Google", lastActiveMinutesAgo: 0, current: true },
+  { id: "s2", device: "mobile", browser: "Safari", os: "iOS 19", location: "Lagos, Nigeria", ip: "102.89.•••.•••", method: "WhatsApp code", lastActiveMinutesAgo: 95, current: false },
+  { id: "s3", device: "desktop", browser: "Firefox 132", os: "macOS 15", location: "Abuja, Nigeria", ip: "41.58.•••.•••", method: "Password", lastActiveMinutesAgo: 60 * 26, current: false },
+  { id: "s4", device: "tablet", browser: "Chrome", os: "Android 15", location: "Accra, Ghana", ip: "154.160.•••.•••", method: "Password", lastActiveMinutesAgo: 60 * 24 * 9, current: false },
+];
+
+export const BRANCHES = [{id: "1", name: "Awoshie Baahyard"}]
+
+/**
+ * All TypeScript types for the patient profile page (/profile):
+ * domain data, UI state, static config shapes and component props.
+ */
+import type {
+  InputHTMLAttributes,
+  ReactNode,
+  SelectHTMLAttributes,
+  TextareaHTMLAttributes,
+} from "react";
+import type { LucideIcon } from "lucide-react";
+
+/* ------------------------------------------------------------------ */
+/* Domain data                                                         */
+/* ------------------------------------------------------------------ */
+
+export type Gender = "female" | "male" | "other" | "undisclosed";
+
+/** Personal details form (maps to Patient + emergency/medical fields). */
+export interface ProfileData {
+  name: string;
+  email: string;
+  phone: string;
+  emailVerified: boolean;
+  phoneVerified: boolean;
+  /** ISO date, YYYY-MM-DD */
+  dateOfBirth: string;
+  gender: Gender;
+  address: string;
+  city: string;
+  emergencyContactName: string;
+  emergencyContactPhone: string;
+  medicalHistory: string;
+}
+
+/** What kinds of message a patient can configure. */
+export type NotifTopic = "appointments" | "checkups" | "orders" | "payments" | "offers";
+export type Channel = "whatsapp" | "sms" | "email";
+/** For every topic, which channels are switched on. */
+export type ChannelMatrix = Record<NotifTopic, Record<Channel, boolean>>;
+
+export type ReminderLead = "day_before" | "two_hours_before" | "both";
+export type FulfilmentMethod = "pickup" | "delivery";
+
+/** Preferences tab (maps to PatientPreferences + Patient.marketingOptIn). */
+export interface Preferences {
+  channels: ChannelMatrix;
+  reminderLead: ReminderLead;
+  preferredBranchId: string;
+  /** "any" means first available clinician, otherwise a clinician's name. */
+  preferredClinician: string;
+  fulfilment: FulfilmentMethod;
+  marketingOptIn: boolean;
+}
+
+export interface Branch {
+  id: string;
+  name: string;
+}
+
+export type DeviceType = "desktop" | "mobile" | "tablet";
+export type SessionLoginMethod = "Password" | "Google" | "WhatsApp code";
+
+/** One row of the "Active sessions" list (maps to AuthSession). */
+export interface AuthSessionInfo {
+  id: string;
+  device: DeviceType;
+  browser: string;
+  os: string;
+  location: string;
+  /** Partially masked, e.g. "102.89.•••.•••" */
+  ip: string;
+  method: SessionLoginMethod;
+  lastActiveMinutesAgo: number;
+  /** The session making this request. */
+  current: boolean;
+}
+
+/** Sign-in state that decides what the Security tab offers. */
+export interface AccountState {
+  hasPassword: boolean;
+  googleLinked: boolean;
+  googleEmail: string;
+  passwordChangedDaysAgo: number | null;
+}
+
+/* ------------------------------------------------------------------ */
+/* UI state                                                            */
+/* ------------------------------------------------------------------ */
+
+export type ProfileTab = "details" | "preferences" | "security" | "sessions";
+
+/** Per-field validation messages for the details form. */
+export type ProfileErrors = Partial<Record<keyof ProfileData, string>>;
+
+/* ------------------------------------------------------------------ */
+/* Static config shapes                                                */
+/* ------------------------------------------------------------------ */
+
+export interface TopicConfig {
+  id: NotifTopic;
+  label: string;
+  text: string;
+  /** At least one channel must stay on (appointments, payments). */
+  required?: boolean;
+}
+
+export interface ChannelConfig {
+  id: Channel;
+  label: string;
+}
+
+export interface ReminderLeadOption {
+  id: ReminderLead;
+  label: string;
+}
+
+export interface PasswordRule {
+  id: string;
+  label: string;
+  test: (password: string) => boolean;
+  /** Required rules block submit; the rest only affect the strength meter. */
+  required: boolean;
+}
+
+/* ------------------------------------------------------------------ */
+/* Form field components (components/portal/profile/fields.tsx)         */
+/* ------------------------------------------------------------------ */
+
+export interface FieldShellProps {
+  id: string;
+  label: string;
+  hint?: string;
+  error?: string;
+  optional?: boolean;
+  children: ReactNode;
+}
+
+/** Props every field shares. */
+export interface FieldCommonProps {
+  label: string;
+  hint?: string;
+  error?: string;
+  optional?: boolean;
+}
+
+export type TextFieldProps = FieldCommonProps & {
+  value: string;
+  onChange: (value: string) => void;
+  /** Rendered inside the input's right edge (badges, show/hide buttons). */
+  trailing?: ReactNode;
+} & Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "onChange" | "className">;
+
+export type PasswordInputProps = FieldCommonProps & {
+  value: string;
+  onChange: (value: string) => void;
+} & Omit<InputHTMLAttributes<HTMLInputElement>, "value" | "onChange" | "className" | "type">;
+
+export type SelectFieldProps = FieldCommonProps & {
+  value: string;
+  onChange: (value: string) => void;
+  children: ReactNode;
+} & Omit<SelectHTMLAttributes<HTMLSelectElement>, "value" | "onChange" | "className">;
+
+export type TextAreaFieldProps = FieldCommonProps & {
+  value: string;
+  onChange: (value: string) => void;
+} & Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "value" | "onChange" | "className">;
+
+/* ------------------------------------------------------------------ */
+/* Tab panels                                                          */
+/* ------------------------------------------------------------------ */
+
+export interface DetailsFormProps {
+  /** Last saved profile; the form is "dirty" when it differs. */
+  saved: ProfileData;
+  /** Object URL / remote URL of the profile photo, or null for initials. */
+  avatarUrl: string | null;
+  onAvatarChange: (url: string | null) => void;
+  onSave: (profile: ProfileData) => void;
+}
+
+export interface PreferencesFormProps {
+  saved: Preferences;
+  onSave: (preferences: Preferences) => void;
+}
+
+export interface SecurityPanelProps {
+  hasPassword: boolean;
+  passwordChangedDaysAgo: number | null;
+  googleLinked: boolean;
+  googleEmail: string;
+  /** Called after a valid password change; `signOutOthers` mirrors the checkbox. */
+  onPasswordSaved: (signOutOthers: boolean) => void;
+  onGoogleChange: (linked: boolean) => void;
+}
+
+export interface SessionsPanelProps {
+  sessions: AuthSessionInfo[];
+  onRevoke: (sessionId: string) => void;
+  onRevokeOthers: () => void;
+}
+
+/** Icon lookup used by the sessions list. */
+export type DeviceIconMap = Record<DeviceType, LucideIcon>;
+
+
 export interface Appointment {
   id: string;
   type: ApptType;

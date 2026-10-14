@@ -14,6 +14,7 @@ import { useState } from "react";
 import CheckoutRecords from "./CheckoutRecords";
 import CheckoutSummary from "./CheckoutSummary";
 import CheckoutTrend from "./CheckoutTrend";
+import { allRoutes } from "@/routes/routes";
 
 /* ---------------- page ---------------- */
 
@@ -30,7 +31,7 @@ export default function CheckupsPage() {
         title="Your eye health history."
         description="Every exam, prescription and clinician note, kept safe and easy to share with your optician."
         actions={
-          <ButtonLink href="/appointments">
+          <ButtonLink href={allRoutes.PORTAL + allRoutes.APPOINTMENTS}>
             <CalendarCheck size={16} /> Book next checkup
           </ButtonLink>
         }
