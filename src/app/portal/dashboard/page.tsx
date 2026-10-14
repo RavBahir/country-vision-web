@@ -14,7 +14,7 @@ import { allRoutes } from "@/routes/routes";
 const QUICK: { href: string; label: string; sub: string; icon: LucideIcon }[] = [
   { href: allRoutes.APPOINTMENTS, label: "Book a visit", sub: "Instant confirmation", icon: CalendarCheck },
   { href: allRoutes.CATALOG, label: "Order spectacles", sub: "Rx on file", icon: Glasses },
-  { href: `"https://wa.me/${WHATSAPP_PHONE}"`, label: "Chat with us", sub: "Mon–Sat", icon: Headset },
+  { href: `https://wa.me/${WHATSAPP_PHONE}`, label: "Chat with us", sub: "Mon–Sat", icon: Headset },
 ];
 
 function greeting(): string {
