@@ -1,5 +1,7 @@
 /* Demo data for the patient portal. Replace with real API calls. */
 
+import { COMPANY_LOCATION, COMPANY_NAME, COMPANY_PHONE, COMPANY_WORKING_HOURS } from "./constants";
+
 export const PATIENT = {
   name: "Amara Okafor",
   first: "Amara",
@@ -9,10 +11,10 @@ export const PATIENT = {
 };
 
 export const CLINIC = {
-  name: "Country Vision, Lekki",
-  address: "14 Admiralty Way, Lekki Phase 1, Lagos",
-  phone: "+234 800 123 4567",
-  hours: "Mon – Sat · 9:00 – 16:00",
+  name: COMPANY_NAME,
+  address: COMPANY_LOCATION,
+  phone: COMPANY_PHONE,
+  hours: COMPANY_WORKING_HOURS,
 };
 
 export const CLINICIANS = ["Dr. Ngozi Eze", "Dr. Kelechi Adebayo", "Tunde Bello (Optician)"] as const;
