@@ -111,7 +111,7 @@ export function Segmented<T extends string>({
           role="tab"
           aria-selected={value === o.value}
           onClick={() => onChange(o.value)}
-          className={`flex shrink-0 items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${
+          className={`flex hover:cursor-pointer shrink-0 items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${
             value === o.value ? "bg-[#1F1A15] text-white" : "text-[#1F1A15]/70 hover:text-[#1F1A15]"
           }`}
         >

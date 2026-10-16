@@ -3,6 +3,19 @@ import { useMutation } from "@tanstack/react-query";
 import type { ILoginDetails, ILoginResponse } from "./auth";
 import { tokenStorage } from "@/lib/token-storage";
 
+interface IVerifyPasswordResetPayload {
+  email: string;
+  otp: string;
+  newPassword: string;
+}
+
+interface IResetPayload {
+  email: string;
+}
+interface IResetResponse {
+  message: string;
+}
+
 export const loginApi = {
   loginUser: (data: ILoginDetails) =>
     apiClient<ILoginResponse>("/auth/login_user", {
@@ -15,6 +28,30 @@ export const loginApi = {
       method: "POST",
       body: data,
     }),
+
+  sendResetUserOTP: (data: IResetPayload) =>
+    apiClient<IResetResponse>("/auth/reset_user_otp", {
+      method: "POST",
+      body: data,
+    }),
+
+  verifyResetUserOTP: (data: IVerifyPasswordResetPayload) =>
+    apiClient<IResetResponse>("/auth/verify_user_reset_otp", {
+      method: "POST",
+      body: data,
+    }),
+
+  sendResetCustomerOTP: (data: IResetPayload) =>
+    apiClient<IResetResponse>("/auth/reset_customer_otp", {
+      method: "POST",
+      body: data,
+    }),
+
+  verifyResetCustomerOTP: (data: IVerifyPasswordResetPayload) =>
+    apiClient<IResetResponse>("/auth/verify_customer_reset_otp", {
+      method: "POST",
+      body: data,
+    }),
 };
 
 const saveToken = (res: { accessToken?: string }) => {
@@ -24,13 +61,25 @@ const saveToken = (res: { accessToken?: string }) => {
 export function useLoginUser() {
   return useMutation<ILoginResponse, Error, ILoginDetails>({
     mutationFn: loginApi.loginUser,
-    onSuccess: saveToken
-});
+    onSuccess: saveToken,
+  });
 }
 
 export function useLoginCustomer() {
-    return useMutation<ILoginResponse, Error, ILoginDetails>({
-        mutationFn: loginApi.loginCustomer,
-        onSuccess: saveToken
+  return useMutation<ILoginResponse, Error, ILoginDetails>({
+    mutationFn: loginApi.loginCustomer,
+    onSuccess: saveToken,
+  });
+}
+
+export function useResetUserOTP() {
+  return useMutation<IResetResponse, Error, IResetPayload>({
+    mutationFn: loginApi.sendResetUserOTP,
+  });
+}
+
+export function useVerifyResetUserOTP() {
+  return useMutation<IResetResponse, Error, IVerifyPasswordResetPayload>({
+    mutationFn: loginApi.verifyResetUserOTP,
   });
 }
