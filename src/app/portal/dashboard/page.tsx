@@ -1,58 +1,39 @@
 "use client";
 
-import Link from "next/link";
 import {
-  ArrowRight,
-  CalendarCheck,
-  Clock,
-  Eye,
-  Glasses,
-  Headset,
-  MapPin,
-  Package,
-  Receipt,
-  type LucideIcon,
-} from "lucide-react";
-import {
-  Badge,
   ButtonLink,
-  Card,
-  Kicker,
-  PageHeader,
-  SectionTitle,
-  StatCard,
-  StepTracker,
+  PageHeader
 } from "@/components/portal/UI";
 import {
   daysBetween,
-  fmtDate,
-  fmtTime,
-  money,
   parseISO,
-  rx,
-  toISO,
   TODAY,
+  toISO
 } from "@/lib/format";
 import {
   APPOINTMENTS,
   CHECKUPS,
-  ORDERS,
   ORDER_STEPS,
-  PATIENT,
+  ORDERS,
   TRANSACTIONS,
 } from "@/lib/portal-data";
-import { CheckupRing, greeting, QUICK } from "./common";
 import { allRoutes } from "@/routes/routes";
+import {
+  ArrowRight
+} from "lucide-react";
+import { greeting } from "./common";
+import DashboardCheckupRing from "./DashboardCheckupRing";
+import DashboardOrders from "./DashboardOrders";
+import DashboardQuickActions from "./DashboardQuickActions";
+import DashboardRecentTransactions from "./DashboardRecentTransactions";
+import DashboardReorderCard from "./DashboardReorderCard";
 import DashboardStats from "./DashboardStats";
 import DashboardUpcoming from "./DashboardUpcoming";
-import DashboardOrders from "./DashboardOrders";
-import DashboardRecentTransactions from "./DashboardRecentTransactions";
-import DashboardCheckupRing from "./DashboardCheckupRing";
-import DashboardReorderCard from "./DashboardReorderCard";
-import DashboardQuickActions from "./DashboardQuickActions";
+import { useSession } from "@/pages/auth/session";
 
 export default function DashboardPage() {
   const todayISO = toISO(TODAY);
+  const {session} = useSession()
   const upcoming = APPOINTMENTS.filter(
     (a) =>
       (a.status === "confirmed" || a.status === "pending") &&
@@ -68,6 +49,8 @@ export default function DashboardPage() {
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, 4);
 
+    const userName = session?.user_validation_info.name ?? ""
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -76,7 +59,7 @@ export default function DashboardPage() {
           <>
             {greeting()},{" "}
             <span className="font-serif text-[1.1em] font-normal italic">
-              {PATIENT.first}.
+              {userName}.
             </span>
           </>
         }

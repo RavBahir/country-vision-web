@@ -1,7 +1,8 @@
 import { apiClient } from "@/lib/api-client";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { ILoginDetails, ILoginResponse } from "./auth";
 import { tokenStorage } from "@/lib/token-storage";
+import { sessionKey } from "./session";
 
 interface IVerifyPasswordResetPayload {
   email: string;
@@ -59,11 +60,26 @@ const saveToken = (res: { accessToken?: string }) => {
 };
 
 export function useLoginUser() {
-  return useMutation<ILoginResponse, Error, ILoginDetails>({
-    mutationFn: loginApi.loginUser,
-    onSuccess: saveToken,
+  const queryClient = useQueryClient();
+  return useMutation<
+    ILoginResponse,
+    Error,
+    ILoginDetails & { remember?: boolean }
+  >({
+    mutationFn: ({ remember, ...creds }) => loginApi.loginUser(creds),
+    onSuccess: ({ accessToken, ...session }, { remember = true }) => {
+      tokenStorage.set(accessToken, remember);
+      queryClient.setQueryData(sessionKey, session);
+    },
   });
 }
+
+// export function useLoginUser() {
+//   return useMutation<ILoginResponse, Error, ILoginDetails>({
+//     mutationFn: loginApi.loginUser,
+//     onSuccess: saveToken,
+//   });
+// }
 
 export function useLoginCustomer() {
   return useMutation<ILoginResponse, Error, ILoginDetails>({

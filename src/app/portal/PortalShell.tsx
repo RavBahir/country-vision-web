@@ -1,11 +1,20 @@
 "use client";
 
+import { useSession } from "@/pages/auth/session";
 import TopNav from "@/pages/layout/Header";
 import Sidebar from "@/pages/layout/Sidebar";
-import { useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, type ReactNode } from "react";
 
 export default function PortalShell({ children }: { children: ReactNode }) {
   const [drawer, setDrawer] = useState(false);
+  const router = useRouter();
+
+  const { isLoading, isAuthenticated } = useSession();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) router.replace("/login");
+  }, [isLoading, isAuthenticated, router]);
 
   return (
     <div className="min-h-screen bg-[#FAF5EE] text-[#1F1A15]">
@@ -15,7 +24,6 @@ export default function PortalShell({ children }: { children: ReactNode }) {
       >
         Skip to content
       </a>
-
       <div className="mx-auto flex gap-6 p-4 lg:p-6">
         {/* desktop sidebar */}
         <Sidebar drawer={drawer} setDrawer={setDrawer} />

@@ -1,10 +1,17 @@
 import { TODAY } from "@/lib/format";
-import { PATIENT } from "@/lib/portal-data";
 import { allRoutes } from "@/routes/routes";
 import { Bell, Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useSession } from "../auth/session";
+import { format } from "date-fns";
 
 const NOTIFICATIONS = [
   {
@@ -27,57 +34,64 @@ const NOTIFICATIONS = [
   },
 ];
 
-const TopNav = ({drawer, setDrawer}:{
-    drawer: boolean,
-    setDrawer: Dispatch<SetStateAction<boolean>>
+const TopNav = ({
+  drawer,
+  setDrawer,
+}: {
+  drawer: boolean;
+  setDrawer: Dispatch<SetStateAction<boolean>>;
 }) => {
   const router = useRouter();
+
+  const { session } = useSession();
 
   const navigateToProfile = () => {
     router.push(allRoutes.PORTAL + allRoutes.PROFILE);
   };
 
-    const pathname = usePathname();
-    const [bell, setBell] = useState(false);
-    const bellRef = useRef<HTMLDivElement>(null);
-  
-    // close menus on navigation
-    useEffect(() => {
-      setDrawer(false);
-      setBell(false);
-    }, [pathname]);
-  
-    // close the notification popover on outside click / Escape; lock scroll with drawer
-    useEffect(() => {
-      const onDown = (e: MouseEvent) => {
-        if (bellRef.current && !bellRef.current.contains(e.target as Node))
-          setBell(false);
-      };
-      const onKey = (e: KeyboardEvent) => {
-        if (e.key === "Escape") {
-          setBell(false);
-          setDrawer(false);
-        }
-      };
-      document.addEventListener("mousedown", onDown);
-      document.addEventListener("keydown", onKey);
-      return () => {
-        document.removeEventListener("mousedown", onDown);
-        document.removeEventListener("keydown", onKey);
-      };
-    }, []);
-  
-    useEffect(() => {
-      document.body.style.overflow = drawer ? "hidden" : "";
-      return () => {
-        document.body.style.overflow = "";
-      };
-    }, [drawer]);
+  const pathname = usePathname();
+  const [bell, setBell] = useState(false);
+  const bellRef = useRef<HTMLDivElement>(null);
 
-  const initials = PATIENT.name
-    .split(" ")
+  // close menus on navigation
+  useEffect(() => {
+    setDrawer(false);
+    setBell(false);
+  }, [pathname]);
+
+  // close the notification popover on outside click / Escape; lock scroll with drawer
+  useEffect(() => {
+    const onDown = (e: MouseEvent) => {
+      if (bellRef.current && !bellRef.current.contains(e.target as Node))
+        setBell(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setBell(false);
+        setDrawer(false);
+      }
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = drawer ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [drawer]);
+
+  const user = session?.user_validation_info
+
+  const initials = user?.name.split(" ")
     .map((p) => p[0])
     .join("");
+
   const today = TODAY.toLocaleDateString("en-GB", {
     weekday: "long",
     day: "numeric",
@@ -94,7 +108,7 @@ const TopNav = ({drawer, setDrawer}:{
         >
           <Menu size={18} />
         </button>
-        <p className="hidden text-sm text-[#1F1A15]/60 sm:block">{today}</p>
+        <p className="hidden text-[12px] text-[#1F1A15]/60 sm:block">{format(new Date(), "eee do MMM yyyy")}</p>
         <span className="rounded-full border border-[#E6D9C6] bg-[#F6EFE4] px-3 py-1 text-xs font-medium lg:ml-2">
           Client Portal
         </span>
@@ -141,15 +155,14 @@ const TopNav = ({drawer, setDrawer}:{
           <span className="grid h-8 w-8 place-items-center rounded-full bg-[#1F1A15] text-xs font-semibold text-white">
             {initials}
           </span>
-          <span className="hidden text-sm leading-tight sm:block">
-            <b className="block font-medium">{PATIENT.name}</b>
+          <span className="hidden text-xs leading-tight sm:block">
+            <b className="block font-medium">{user?.name}</b>
             <span className="text-[10px] text-[#1F1A15]/50">
-              ID {PATIENT.id}
+               {user?.roleName}
             </span>
           </span>
         </div>
       </div>
-      
     </header>
   );
 };

@@ -3,14 +3,34 @@
 /* ------------------------------------------------------------------ */
 
 import { WHATSAPP_LINK } from "@/lib/constants";
-import { ArrowRight, Eye, EyeOff, Globe, Headset, Lock, LucideIcon, Mail, MessageCircle, Phone, Sparkles, User } from "lucide-react";
+import {
+  ArrowRight,
+  Eye,
+  EyeOff,
+  Globe,
+  Headset,
+  Lock,
+  LucideIcon,
+  Mail,
+  MessageCircle,
+  Phone,
+  Sparkles,
+  User,
+} from "lucide-react";
 import { ACCOUNT_TYPE } from "./page";
 import { allRoutes } from "@/routes/routes";
 import { useCreateUser } from "@/pages/users/common/users-api";
 import { useLoginCustomer, useLoginUser } from "@/pages/auth/auth-api";
-import { ChangeEventHandler, FormEvent, ReactNode, useId, useState } from "react";
+import {
+  ChangeEventHandler,
+  FormEvent,
+  ReactNode,
+  useId,
+  useState,
+} from "react";
 import { useRouter } from "next/navigation";
-
+import { useCreateCustomer } from "@/pages/customers/common/customers-api";
+import { showToast } from "@/components/CustomToast";
 
 /* ------------------------------------------------------------------ */
 /* Small building blocks                                               */
@@ -101,7 +121,6 @@ function PasswordField({
 
 type Mode = "signin" | "signup";
 
-
 function AuthCard() {
   const router = useRouter();
   const [mode, setMode] = useState<Mode>("signin");
@@ -114,11 +133,11 @@ function AuthCard() {
 
   const loginCustomer = useLoginCustomer();
   const loginUser = useLoginUser();
-  const createUser = useCreateUser();
+  const createCustomer = useCreateCustomer();
 
   const isSignIn = mode === "signin";
   const isPending =
-    loginCustomer.isPending || loginUser.isPending || createUser.isPending;
+    loginCustomer.isPending || loginUser.isPending || createCustomer.isPending;
 
   const switchMode = (m: Mode) => {
     setMode(m);
@@ -141,11 +160,11 @@ function AuthCard() {
       });
 
     if (!isSignIn) {
-      createUser.mutate(
+      createCustomer.mutate(
         {
           name: String(form.get("name") ?? "").trim(),
           email,
-          phone: String(form.get("phone") ?? "").trim(),
+          phone1: String(form.get("phone") ?? "").trim(),
           password,
         },
         {
@@ -153,6 +172,11 @@ function AuthCard() {
             setStatus({
               type: "ok",
               text: "Account created. You can now sign in.",
+            });
+            showToast({
+              title: "Account created",
+              message: "Account created successfully. You can sign in now.",
+              type: "success",
             });
             setMode("signin");
             setAccountType("customer");
@@ -169,12 +193,17 @@ function AuthCard() {
       {
         onSuccess: () => {
           // Adjust these routes to your app
+          showToast({
+            title: "Login Successful",
+            message: "You have succesfully logged in!",
+            type: "success",
+          });
           router.replace(
             accountType === "customer"
               ? allRoutes.PORTAL + allRoutes.DASHBOARD
               : allRoutes.PORTAL + allRoutes.DASHBOARD,
           );
-        }, 
+        },
         onError,
       },
     );
@@ -367,4 +396,4 @@ function AuthCard() {
   );
 }
 
-export default AuthCard
+export default AuthCard;

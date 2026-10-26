@@ -24,6 +24,7 @@ export interface IBranch {
 export interface IRole {
   id: string;
   name: string;
+  roleId?: string
   isAdmin?: boolean;
 }
 
@@ -40,6 +41,7 @@ export type IUserValidationInfo = {
   organizationId: string;
   roleId: string;
   roleName?: string;
+  kind: "user" | "customer"
   isAdmin?: boolean;
   isSuperadmin?: boolean;
   emailIsVerified?: boolean;
@@ -60,6 +62,7 @@ export type ILoginResponse = {
   accessToken: string;
   emailIsVerified: boolean;
   isLoggedIn: boolean;
+  kind: "user" | "customer";
   user_validation_info: IUserValidationInfo;
   organization: IOrganization;
   currentBranch?: IBranch | null;

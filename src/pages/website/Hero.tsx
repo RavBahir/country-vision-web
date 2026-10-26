@@ -37,7 +37,7 @@ function Hero() {
             <MaskLine delay={320}>Better choices.</MaskLine>
             <MaskLine delay={440}>
               <span className="font-serif text-[1.1em] font-normal italic">
-                Better care.
+                Better care.``
               </span>
             </MaskLine>
           </h1>

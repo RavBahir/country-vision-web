@@ -1,9 +1,11 @@
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { WHATSAPP_LINK } from '@/lib/constants';
 import { allRoutes } from '@/routes/routes';
-import { CalendarCheck, CalendarDays, Eye, Glasses, Headset, LayoutDashboard, LogOut, LucideIcon, Receipt, X } from 'lucide-react';
+import { CalendarCheck, CalendarDays, Eye, Glasses, Headset, LayoutDashboard, LogOut, LucideIcon, Receipt, User2, Users, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
+import { useLogout } from '../auth/session';
 
 const NAV: { href: string; label: string; icon: LucideIcon }[] = [
   { href: allRoutes.DASHBOARD, label: "Dashboard", icon: LayoutDashboard },
@@ -12,6 +14,8 @@ const NAV: { href: string; label: string; icon: LucideIcon }[] = [
   { href: allRoutes.CATALOG, label: "Catalog", icon: Glasses },
   { href: allRoutes.TRANSACTIONS, label: "Transactions", icon: Receipt },
   { href: allRoutes.CALENDAR, label: "Calendar", icon: CalendarDays },
+  { href: allRoutes.CUSTOMERS, label: "Customers", icon: Users },
+  { href: allRoutes.USERS, label: "Users", icon: User2 },
 ];
 
 
@@ -34,6 +38,7 @@ function Brand() {
 
 function NavList({ pathname }: { pathname: string }) {
   return (
+    <ScrollArea className={"max-h-[50vh]"}>
     <nav aria-label="Portal sections">
       <ul className="grid gap-1">
         {NAV.map((n) => {
@@ -46,7 +51,7 @@ function NavList({ pathname }: { pathname: string }) {
               <Link
                 href={allRoutes.PORTAL + n.href}
                 aria-current={active ? "page" : undefined}
-                className={`flex items-center gap-3 rounded-full px-4 py-3 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-3 rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
                   active
                     ? "bg-[#1F1A15] text-white"
                     : "text-[#1F1A15]/70 hover:bg-[#F1E7D8] hover:text-[#1F1A15]"
@@ -59,15 +64,23 @@ function NavList({ pathname }: { pathname: string }) {
         })}
       </ul>
     </nav>
+    </ScrollArea>
   );
 }
 
 function SidebarFooter() {
+  const logout = useLogout();
+  const logoutUser = () => {
+    logout();
+  }
   return (
-    <div className="mt-auto grid gap-3">
+    <div className="grid gap-3">
       <div className="rounded-2xl bg-[#181410] p-4 text-white">
+        <div className='flex items-center gap-2'>
+
         <Headset size={18} className="text-[#C9A57B]" />
-        <p className="mt-3 text-sm font-medium">Need help?</p>
+        <p className=" text-sm font-medium">Need help?</p>
+        </div>
         <p className="mt-1 text-xs text-white/60">
           Chat with our team Mon–Sat.
         </p>
@@ -80,7 +93,8 @@ function SidebarFooter() {
       </div>
       <Link
         href={allRoutes.LOGIN}
-        className="flex items-center gap-3 rounded-full px-4 py-3 text-sm text-[#1F1A15]/65 hover:bg-[#F1E7D8] hover:text-[#1F1A15]"
+        onClick={logoutUser}
+        className="flex items-center gap-3 rounded-full px-4 py-2.5 text-sm text-[#1F1A15]/65 hover:bg-[#F1E7D8] hover:text-[#1F1A15]"
       >
         <LogOut size={17} /> Sign out
       </Link>
@@ -93,7 +107,7 @@ const Sidebar = ({setDrawer, drawer}: {drawer: boolean, setDrawer: Dispatch<SetS
     
   return (
     <>
-     <aside className="sticky top-6 hidden h-[calc(100vh-3rem)] w-64 shrink-0 flex-col gap-8 rounded-[2rem] border border-[#E6D9C6] bg-white p-5 lg:flex">
+     <aside className="sticky top-6 hidden h-[calc(100vh-3rem)] w-64 shrink-0 flex-col gap-4 rounded-[2rem] border border-[#E6D9C6] bg-white p-5 lg:flex">
           <Brand />
           <NavList pathname={pathname ?? ""} />
           <SidebarFooter />
