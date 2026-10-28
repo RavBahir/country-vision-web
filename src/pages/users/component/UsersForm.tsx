@@ -13,6 +13,7 @@ import { useState, type FormEvent } from "react";
 import { IUser } from "../common/users";
 import { useCreateUser, useUpdateUser } from "../common/users-api";
 import { BASIC_STATUS } from "@/lib/enums";
+import { showToast } from "@/components/CustomToast";
 
 type Props = {
   /** null = create, a user = edit */
@@ -56,13 +57,18 @@ export default function UserForm({
     name: initial?.name ?? "",
     email: initial?.email ?? "",
     phone: (initial as { phone?: string } | null)?.phone ?? "",
-    roleId: initial?.role?.id ?? (initial as { roleId?: string } | null)?.roleId ?? "",
+    roleId:
+      initial?.role?.id ??
+      (initial as { roleId?: string } | null)?.roleId ??
+      "",
     branchId: (initial as { branchId?: string } | null)?.branchId ?? "",
     status: initial?.status ?? "active",
     password: "",
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof Values, string>>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof Values, string>>>(
+    {},
+  );
 
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
@@ -80,7 +86,8 @@ export default function UserForm({
     const e: typeof errors = {};
     if (!values.name.trim()) e.name = "Name is required.";
     if (!values.email.trim()) e.email = "Email is required.";
-    else if (!EMAIL_RE.test(values.email.trim())) e.email = "Enter a valid email.";
+    else if (!EMAIL_RE.test(values.email.trim()))
+      e.email = "Enter a valid email.";
     if (!values.roleId) e.roleId = "Choose a role.";
     if (!isEdit && values.password.length < 8)
       e.password = "Password must be at least 8 characters.";
@@ -100,7 +107,7 @@ export default function UserForm({
       phone: values.phone.trim() || undefined,
       roleId: values.roleId,
       branchId: values.branchId || undefined,
-      status: isEdit ? values.status as BASIC_STATUS : BASIC_STATUS.Active,
+      status: isEdit ? (values.status as BASIC_STATUS) : BASIC_STATUS.Active,
       // Never send an empty password when editing
       ...(values.password ? { password: values.password } : {}),
     };
@@ -110,14 +117,19 @@ export default function UserForm({
         { id: initial.id, data: payload },
         { onSuccess: (u) => onSaved?.(u, "updated") },
       );
+      showToast({
+        title: "User updated",
+        message: "User account has been updated succesfully!",
+        type: "success",
+      });
     } else {
-
-
-
-
-
       createUser.mutate(payload, {
         onSuccess: (u) => onSaved?.(u, "created"),
+      });
+      showToast({
+        title: "User created",
+        message: "User account has been created succesfully!",
+        type: "success",
       });
     }
   };
@@ -174,7 +186,11 @@ export default function UserForm({
             value={values.password}
             onChange={set("password")}
             error={errors.password}
-            hint={isEdit ? "Leave blank to keep the current password." : "At least 8 characters."}
+            hint={
+              isEdit
+                ? "Leave blank to keep the current password."
+                : "At least 8 characters."
+            }
             autoComplete="new-password"
             required={!isEdit}
           />

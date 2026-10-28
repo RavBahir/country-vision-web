@@ -280,7 +280,7 @@ export interface SessionsPanelProps {
 export type DeviceIconMap = Record<DeviceType, LucideIcon>;
 
 
-export interface Appointment {
+export interface IAppointment {
   id: string;
   type: ApptType;
   date: string; // YYYY-MM-DD
@@ -291,7 +291,7 @@ export interface Appointment {
   notes?: string;
 }
 
-export const APPOINTMENTS: Appointment[] = [
+export const APPOINTMENTS: IAppointment[] = [
   { id: "a1", type: "Eye checkup", date: "2026-10-16", time: "09:30", clinician: "Dr. Ngozi Eze", location: CLINIC.name, status: "confirmed", notes: "6-month review after prescription change." },
   { id: "a2", type: "Frame fitting", date: "2026-10-22", time: "14:00", clinician: "Tunde Bello (Optician)", location: CLINIC.name, status: "pending" },
   { id: "a3", type: "Follow-up", date: "2026-11-05", time: "11:30", clinician: "Dr. Kelechi Adebayo", location: CLINIC.name, status: "confirmed" },

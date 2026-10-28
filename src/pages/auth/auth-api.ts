@@ -74,17 +74,18 @@ export function useLoginUser() {
   });
 }
 
-// export function useLoginUser() {
-//   return useMutation<ILoginResponse, Error, ILoginDetails>({
-//     mutationFn: loginApi.loginUser,
-//     onSuccess: saveToken,
-//   });
-// }
-
 export function useLoginCustomer() {
-  return useMutation<ILoginResponse, Error, ILoginDetails>({
-    mutationFn: loginApi.loginCustomer,
-    onSuccess: saveToken,
+  const queryClient = useQueryClient();
+  return useMutation<
+    ILoginResponse,
+    Error,
+    ILoginDetails & { remember?: boolean }
+  >({
+    mutationFn: ({ remember, ...creds }) => loginApi.loginCustomer(creds),
+    onSuccess: ({ accessToken, ...session }, { remember = true }) => {
+      tokenStorage.set(accessToken, remember);
+      queryClient.setQueryData(sessionKey, session);
+    },
   });
 }
 
