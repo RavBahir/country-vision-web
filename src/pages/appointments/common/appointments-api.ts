@@ -10,7 +10,7 @@ import {
 const unwrap = <T,>(p: Promise<{ data: T }>) => p.then((r) => r.data);
 
 export const myAppointmentsApi = {
-  listMy: () => unwrap(apiClient<{ data: IAppointment[] }>("/appointments/my")),
+  listCustomerAppointments: () => unwrap(apiClient<{ data: IAppointment[] }>("/appointments/my")),
   listAll: () => unwrap(apiClient<{ data: IAppointment[] }>("/appointments")),
 
   availability: (date: string, branchId?: string) => {
@@ -38,7 +38,8 @@ export const myAppointmentsApi = {
 };
 
 export const useMyAppointments = () =>
-  useQuery({ queryKey: apptKeys.lists(), queryFn: myAppointmentsApi.listMy });
+  useQuery({ queryKey: apptKeys.listCustomers(), queryFn: myAppointmentsApi.listCustomerAppointments });
+
 export const useGetAllAppointments = () =>
   useQuery({ queryKey: apptKeys.lists(), queryFn: myAppointmentsApi.listAll });
 

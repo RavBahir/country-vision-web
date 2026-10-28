@@ -10,6 +10,7 @@ import { useLogout } from '../auth/session';
 const NAV: { href: string; label: string; icon: LucideIcon }[] = [
   { href: allRoutes.DASHBOARD, label: "Dashboard", icon: LayoutDashboard },
   { href: allRoutes.APPOINTMENTS, label: "Appointments", icon: CalendarCheck },
+  { href: allRoutes.SCHEDULES, label: "Schedules", icon: CalendarCheck },
   { href: allRoutes.CHECKUPS, label: "Checkups", icon: Eye },
   { href: allRoutes.CATALOG, label: "Catalog", icon: Glasses },
   { href: allRoutes.TRANSACTIONS, label: "Transactions", icon: Receipt },

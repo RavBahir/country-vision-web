@@ -42,6 +42,7 @@ export type IChangeInput = Partial<Omit<IBookInput, "branchId">>;
 export const apptKeys = {
   all: ["my-appointments"] as const,
   lists: () => [...apptKeys.all, "list"] as const,
+  listCustomers: () => [...apptKeys.all, "customers"] as const,
   availability: (date: string, branchId?: string) =>
     [...apptKeys.all, "availability", date, branchId ?? "default"] as const,
   branches: () => [...apptKeys.all, "branches"] as const,

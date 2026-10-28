@@ -53,6 +53,8 @@ const TopNav = ({
   const [bell, setBell] = useState(false);
   const bellRef = useRef<HTMLDivElement>(null);
 
+  const isCustomer = session?.user_validation_info.kind === "customer"
+
   // close menus on navigation
   useEffect(() => {
     setDrawer(false);
@@ -92,12 +94,6 @@ const TopNav = ({
     .map((p) => p[0])
     .join("");
 
-  const today = TODAY.toLocaleDateString("en-GB", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  });
-
   return (
     <header className="flex items-center sticky top-6 justify-between gap-3 rounded-full border border-[#E6D9C6] bg-white py-2 pr-2 pl-3 sm:pl-5 z-70 ">
       <div className="flex items-center gap-3">
@@ -110,7 +106,7 @@ const TopNav = ({
         </button>
         <p className="hidden text-[12px] text-[#1F1A15]/60 sm:block">{format(new Date(), "eee do MMM yyyy")}</p>
         <span className="rounded-full border border-[#E6D9C6] bg-[#F6EFE4] px-3 py-1 text-xs font-medium lg:ml-2">
-          Client Portal
+          {isCustomer ? "Client Portal" : "Staff Portal"}
         </span>
       </div>
 

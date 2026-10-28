@@ -26,6 +26,7 @@ const VIEW_ONLY = ["View"] as const; // audit log
 const RESOURCES = [
   { id: "Appointments", noun: "appointments", group: "Clinic", actions: CRUD },
   { id: "Prescriptions", noun: "prescriptions", group: "Clinic", actions: CRUD },
+  { id: "ExamRecords", noun: "exam records", group: "Clinic", actions: CRUD },
 
   { id: "Orders", noun: "spectacle orders", group: "Sales", actions: CRUD },
   { id: "Payments", noun: "payments & receipts", group: "Sales", actions: NO_DELETE },
