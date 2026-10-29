@@ -46,6 +46,7 @@ jobs:
           push: true
           build-args: |
             NEXT_PUBLIC_SITE_DOMAIN=${{ vars.NEXT_PUBLIC_SITE_DOMAIN }}
+            NEXT_PUBLIC_BASE_URL=${{ vars.NEXT_PUBLIC_BASE_URL }}
           tags: |
             ${{ steps.image.outputs.name }}:latest
             ${{ steps.image.outputs.name }}:${{ github.sha }}
