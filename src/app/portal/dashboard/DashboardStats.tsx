@@ -1,9 +1,9 @@
 import { StatCard } from '@/components/portal/UI'
 import { fmtDate, fmtTime, rx } from '@/lib/format'
-import { Appointment, Checkup, Order } from '@/lib/portal-data'
+import { IAppointment, Checkup, Order } from '@/lib/portal-data'
 import { CalendarCheck, Clock, Eye, Package } from 'lucide-react'
 
-const DashboardStats = ({next,last, activeOrders, dueIn}:{next: Appointment, activeOrders: Order[], last: Checkup, dueIn: number}) => {
+const DashboardStats = ({next,last, activeOrders, dueIn}:{next: IAppointment, activeOrders: Order[], last: Checkup, dueIn: number}) => {
   return (
        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard

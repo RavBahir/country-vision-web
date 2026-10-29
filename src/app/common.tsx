@@ -4,6 +4,7 @@
 /* ------------------------------------------------------------------ */
 
 import { COMPANY_NAME } from "@/lib/constants";
+import { allRoutes } from "@/routes/routes";
 import { LucideIcon, Menu, X } from "lucide-react";
 import { ElementType, ReactNode, useEffect, useRef, useState } from "react";
 
@@ -450,7 +451,7 @@ export function Header({ active, onNavigate }: HeaderProps) {
           >
             Explore Eyewear
           </a>
-          <CButton href="#contact">Book an Eye Checkup</CButton>
+          <CButton href={allRoutes.LOGIN}>Book an Eye Checkup</CButton>
 
         </div>
 
@@ -495,7 +496,7 @@ export function Header({ active, onNavigate }: HeaderProps) {
                 </li>
               ))}
             </ul>
-            <CButton href="#contact" className="w-full">
+            <CButton href={allRoutes.LOGIN} className="w-full">
               Book an Eye Checkup
             </CButton>
           </div>

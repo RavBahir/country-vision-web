@@ -1,11 +1,11 @@
 import { Badge, Card, SectionTitle } from "@/components/portal/UI"
 import { fmtDate, fmtTime, parseISO } from "@/lib/format"
-import { Appointment } from "@/lib/portal-data"
+import { IAppointment } from "@/lib/portal-data"
 import { allRoutes } from "@/routes/routes"
 import { ArrowRight, Clock, MapPin } from "lucide-react"
 import Link from "next/link"
 
-const DashboardUpcoming = ({upcoming}:{upcoming: Appointment[]}) => {
+const DashboardUpcoming = ({upcoming}:{upcoming: IAppointment[]}) => {
   return (
           <Card className="p-6">
             <SectionTitle
