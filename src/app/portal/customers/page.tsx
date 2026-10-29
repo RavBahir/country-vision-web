@@ -40,7 +40,7 @@ const titleCase = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const phoneOf = (c: ICustomer) => c.phone1 || c.phone2 || "-";
 const locationOf = (c: ICustomer) =>
   [c.city, c.country].filter(Boolean).join(", ") || "-";
-const branchOf = (c: ICustomer) => c.branch?.name ?? "-";
+// const branchOf = (c: ICustomer) => c.branch?.name ?? "-";
 const statusOf = (c: ICustomer) => c.status ?? "active"; // schema default is active
 
 function StatusBadge({ customer }: { customer: ICustomer }) {
@@ -48,11 +48,12 @@ function StatusBadge({ customer }: { customer: ICustomer }) {
   return <Badge tone={TONE[s] ?? "neutral"}>{titleCase(s)}</Badge>;
 }
 
-function EditButton({ customer }: { customer: ICustomer }) {
+function EditButton({ customer, onClick }: { customer: ICustomer, onClick: () => void }) {
   return (
     <button
       type="button"
       aria-label={`Edit ${customer.name}`}
+      onClick={onClick}
       className="grid h-9 w-9 place-items-center rounded-full border border-[#E6D9C6] hover:bg-[#F1E7D8]"
     >
       <Edit2 size={15} />
@@ -87,7 +88,7 @@ function TableSkeleton() {
 export default function CustomersPage() {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("all");
-  const [branch, setBranch] = useState("all");
+  // const [branch, setBranch] = useState("all");
   const [editing, setEditing] = useState<ICustomer | null>(null);
   const [formOpen, setFormOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
@@ -123,26 +124,26 @@ export default function CustomersPage() {
     [list],
   );
 
-  const branchOptions = useMemo(() => {
-    const names = new Set<string>();
-    list.forEach((c) => {
-      const n = branchOf(c);
-      if (n !== "-") names.add(n);
-    });
-    return [
-      { value: "all", label: "All branches" },
-      ...Array.from(names)
-        .sort((a, b) => a.localeCompare(b))
-        .map((n) => ({ value: n, label: n })),
-    ];
-  }, [list]);
+  // const branchOptions = useMemo(() => {
+  //   const names = new Set<string>();
+  //   list.forEach((c) => {
+  //     const n = branchOf(c);
+  //     if (n !== "-") names.add(n);
+  //   });
+  //   return [
+  //     { value: "all", label: "All branches" },
+  //     ...Array.from(names)
+  //       .sort((a, b) => a.localeCompare(b))
+  //       .map((n) => ({ value: n, label: n })),
+  //   ];
+  // }, [list]);
 
   const rows = useMemo(() => {
     const q = query.trim().toLowerCase();
     return list
       .filter((c) => {
         if (status !== "all" && statusOf(c) !== status) return false;
-        if (branch !== "all" && branchOf(c) !== branch) return false;
+        // if (branch !== "all" && branchOf(c) !== branch) return false;
         if (!q) return true;
         return [c.code, c.name, c.email, c.phone1, c.phone2, c.city, c.country]
           .filter(Boolean)
@@ -153,16 +154,16 @@ export default function CustomersPage() {
       .sort((a, b) =>
         String(b.createdAt ?? "").localeCompare(String(a.createdAt ?? "")),
       );
-  }, [list, query, status, branch]);
+  }, [list, query, status]);
 
   const hasFilters =
-    query.trim() !== "" || status !== "all" || branch !== "all";
+    query.trim() !== "" || status !== "all";
   const totalCount = list.length;
 
   const clearFilters = () => {
     setQuery("");
     setStatus("all");
-    setBranch("all");
+    // setBranch("all");
   };
 
   return (
@@ -172,7 +173,7 @@ export default function CustomersPage() {
         title="Customers"
         description="Patients and customers registered with your organization."
         actions={
-          <Button className="hidden" disabled variant="secondary" onClick={openCreate}>
+          <Button variant="secondary" onClick={openCreate}>
             <Plus size={16} /> Add New Customer
           </Button>
         }
@@ -236,14 +237,14 @@ export default function CustomersPage() {
         </div>
       </div>
 
-      {branchOptions.length > 2 && (
+      {/* {branchOptions.length > 2 && (
         <Segmented<string>
           label="Branch"
           value={branch}
           onChange={setBranch}
           options={branchOptions}
         />
-      )}
+      )} */}
 
       {/* content: exactly one of these renders */}
       {isPending ? (
@@ -295,7 +296,7 @@ export default function CustomersPage() {
                       "Customer",
                       "Phone",
                       "Location",
-                      "Branch",
+                      // "Branch",
                       "Joined",
                       "Status",
                     ].map((h) => (
@@ -329,9 +330,9 @@ export default function CustomersPage() {
                       <td className="px-6 py-4 text-[#1F1A15]/70">
                         {locationOf(c)}
                       </td>
-                      <td className="px-6 py-4 text-[#1F1A15]/70">
+                      {/* <td className="px-6 py-4 text-[#1F1A15]/70">
                         {branchOf(c)}
-                      </td>
+                      </td> */}
                       <td className="px-6 py-4 whitespace-nowrap text-[#1F1A15]/70">
                         {c.createdAt
                           ? format(c.createdAt as string, "dd/MM/yyyy")
@@ -341,7 +342,7 @@ export default function CustomersPage() {
                         <StatusBadge customer={c} />
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <EditButton customer={c} />
+                        <EditButton onClick={() => openEdit(c)} customer={c} />
                       </td>
                     </tr>
                   ))}
@@ -366,10 +367,10 @@ export default function CustomersPage() {
                       </p>
                       <p className="mt-1 text-xs text-[#1F1A15]/50">
                         {locationOf(c)}
-                        {branchOf(c) !== "-" ? ` · ${branchOf(c)}` : ""}
+                        {/* {branchOf(c) !== "-" ? ` · ${branchOf(c)}` : ""} */}
                       </p>
                     </div>
-                    <EditButton customer={c} />
+                    <EditButton onClick={() => openEdit(c)} customer={c} />
                   </div>
                   <div className="mt-4 flex items-center justify-between">
                     <StatusBadge customer={c} />
@@ -389,7 +390,7 @@ export default function CustomersPage() {
       {formOpen && (
         <CustomerForm
           initial={editing}
-          branches={[]}
+          // branches={[]}
           onClose={closeForm}
           onSaved={(_, mode) => {
             closeForm();

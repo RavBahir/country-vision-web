@@ -10,7 +10,7 @@ import {
 const unwrap = <T,>(p: Promise<{ data: T }>) => p.then((r) => r.data);
 
 export const myAppointmentsApi = {
-  listCustomerAppointments: () => unwrap(apiClient<{ data: IAppointment[] }>("/appointments/my")),
+  listCustomerAppointments: () => unwrap(apiClient<{ data: IAppointment[] }>("/appointments/mine")),
   listAll: () => unwrap(apiClient<{ data: IAppointment[] }>("/appointments")),
 
   availability: (date: string, branchId?: string) => {

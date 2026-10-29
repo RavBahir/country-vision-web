@@ -1,13 +1,18 @@
 // pages/customers/common/customers-api.ts
 import { apiClient } from "@/lib/api-client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { customerKeys, type ICreateCustomer, type ICustomer } from "./customers";
+import {
+  customerKeys,
+  IQuickCreateCustomer,
+  type ICreateCustomer,
+  type ICustomer,
+} from "./customers";
 
 type ListResponse<T> =
   | T[]
   | { data?: T[]; customers?: T[]; items?: T[]; results?: T[] };
 
-const toArray = <T,>(res: ListResponse<T> | null | undefined): T[] => {
+const toArray = <T>(res: ListResponse<T> | null | undefined): T[] => {
   if (Array.isArray(res)) return res;
   return res?.data ?? res?.customers ?? res?.items ?? res?.results ?? [];
 };
@@ -18,8 +23,11 @@ export const customersApi = {
 
   getById: (id: string) => apiClient<ICustomer>(`/customers/${id}`),
 
-  create: (data: ICreateCustomer) =>
+  createSelf: (data: IQuickCreateCustomer) =>
     apiClient<ICustomer>("/customers", { method: "POST", body: data }),
+
+  createNew: (data: ICreateCustomer) =>
+    apiClient<ICustomer>("/customers/new", { method: "POST", body: data }),
 
   update: (id: string, data: Partial<ICustomer>) =>
     apiClient<ICustomer>(`/customers/${id}`, { method: "PATCH", body: data }),
@@ -43,10 +51,19 @@ export function useGetCustomer(id: string) {
   });
 }
 
-export function useCreateCustomer() {
+export function useSelfCreateCustomer() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: ICreateCustomer) => customersApi.create(data),
+    mutationFn: (data: IQuickCreateCustomer) => customersApi.createSelf(data),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: customerKeys.lists() }),
+  });
+}
+
+export function useCreateNewCustomerByStaff() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: ICreateCustomer) => customersApi.createNew(data),
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: customerKeys.lists() }),
   });

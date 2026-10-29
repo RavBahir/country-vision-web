@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import { ACCOUNT_TYPE } from "./page";
 import { allRoutes } from "@/routes/routes";
-import { useCreateUser } from "@/pages/users/common/users-api";
 import { useLoginCustomer, useLoginUser } from "@/pages/auth/auth-api";
 import {
   ChangeEventHandler,
@@ -29,7 +28,7 @@ import {
   useState,
 } from "react";
 import { useRouter } from "next/navigation";
-import { useCreateCustomer } from "@/pages/customers/common/customers-api";
+import { useSelfCreateCustomer } from "@/pages/customers/common/customers-api";
 import { showToast } from "@/components/CustomToast";
 
 /* ------------------------------------------------------------------ */
@@ -133,7 +132,7 @@ function AuthCard() {
 
   const loginCustomer = useLoginCustomer();
   const loginUser = useLoginUser();
-  const createCustomer = useCreateCustomer();
+  const createCustomer = useSelfCreateCustomer();
 
   const isSignIn = mode === "signin";
   const isPending =
@@ -144,49 +143,55 @@ function AuthCard() {
     setStatus(null);
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (isPending) return;
-    setStatus(null);
-
-    const form = new FormData(e.currentTarget);
-    const email = String(form.get("email") ?? "").trim();
-    const password = String(form.get("password") ?? "");
-
-    const onError = (error: Error) =>
-      setStatus({
-        type: "error",
-        text: error.message || "Something went wrong.",
-      });
-
-    if (!isSignIn) {
-      createCustomer.mutate(
-        {
-          name: String(form.get("name") ?? "").trim(),
-          email,
-          phone1: String(form.get("phone") ?? "").trim(),
-          password,
+  
+  const proceedToSignUp = ({
+    email,
+    onError,
+    password,
+    form,
+  }: {
+    form: FormData;
+    email: string;
+    password: string;
+    onError: (error: Error) => void;
+  }) => {
+    createCustomer.mutate(
+      {
+        name: String(form.get("name") ?? "").trim(),
+        email,
+        phone1: String(form.get("phone") ?? "").trim(),
+        password : password,
+      },
+      {
+        onSuccess: () => {
+          setStatus({
+            type: "ok",
+            text: "Account created. You can now sign in.",
+          });
+          showToast({
+            title: "Account created",
+            message: "Account created successfully. You can sign in now.",
+            type: "success",
+          });
+          setMode("signin");
+          setAccountType("customer");
+           proceedToLogin({ email, password, onError });
         },
-        {
-          onSuccess: () => {
-            setStatus({
-              type: "ok",
-              text: "Account created. You can now sign in.",
-            });
-            showToast({
-              title: "Account created",
-              message: "Account created successfully. You can sign in now.",
-              type: "success",
-            });
-            setMode("signin");
-            setAccountType("customer");
-          },
-          onError,
-        },
-      );
-      return;
-    }
+        onError,
+      },
+    );
+    return;
+  };
 
+  const proceedToLogin = ({
+    email,
+    onError,
+    password,
+  }: {
+    email: string;
+    password: string;
+    onError: (error: Error) => void;
+  }) => {
     const login = accountType === "customer" ? loginCustomer : loginUser;
     login.mutate(
       { email, password },
@@ -208,6 +213,29 @@ function AuthCard() {
       },
     );
   };
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isPending) return;
+    setStatus(null);
+
+    const form = new FormData(e.currentTarget);
+    const email = String(form.get("email") ?? "").trim();
+    const password = String(form.get("password") ?? "");
+
+    const onError = (error: Error) =>
+      setStatus({
+        type: "error",
+        text: error.message || "Something went wrong.",
+      });
+
+    if (!isSignIn) {
+      proceedToSignUp({ email, password, onError, form });
+    }
+
+    proceedToLogin({ email, password, onError });
+  };
+
 
   return (
     <section

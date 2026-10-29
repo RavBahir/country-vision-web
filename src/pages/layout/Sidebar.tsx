@@ -5,18 +5,18 @@ import { CalendarCheck, CalendarDays, Eye, Glasses, Headset, LayoutDashboard, Lo
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
-import { useLogout } from '../auth/session';
+import { useLogout, useSession } from '../auth/session';
 
-const NAV: { href: string; label: string; icon: LucideIcon }[] = [
+const NAV: { href: string; label: string; icon: LucideIcon, isUserOnly?: boolean }[] = [
   { href: allRoutes.DASHBOARD, label: "Dashboard", icon: LayoutDashboard },
   { href: allRoutes.APPOINTMENTS, label: "Appointments", icon: CalendarCheck },
-  { href: allRoutes.SCHEDULES, label: "Schedules", icon: CalendarCheck },
+  { href: allRoutes.SCHEDULES, label: "Schedules", icon: CalendarCheck, isUserOnly: true },
   { href: allRoutes.CHECKUPS, label: "Checkups", icon: Eye },
   { href: allRoutes.CATALOG, label: "Catalog", icon: Glasses },
   { href: allRoutes.TRANSACTIONS, label: "Transactions", icon: Receipt },
   { href: allRoutes.CALENDAR, label: "Calendar", icon: CalendarDays },
-  { href: allRoutes.CUSTOMERS, label: "Customers", icon: Users },
-  { href: allRoutes.USERS, label: "Users", icon: User2 },
+  { href: allRoutes.CUSTOMERS, label: "Customers", icon: Users, isUserOnly: true },
+  { href: allRoutes.USERS, label: "Users", icon: User2, isUserOnly: true },
 ];
 
 
@@ -37,7 +37,7 @@ function Brand() {
   );
 }
 
-function NavList({ pathname }: { pathname: string }) {
+function NavList({ pathname, isStaff }: { pathname: string, isStaff: boolean }) {
   return (
     <ScrollArea className={"max-h-[50vh]"}>
     <nav aria-label="Portal sections">
@@ -47,6 +47,10 @@ function NavList({ pathname }: { pathname: string }) {
             pathname ===
             allRoutes.PORTAL +
               (n.href || pathname.startsWith(`${allRoutes.PORTAL + n.href}/`));
+
+          const userOnly = n.isUserOnly;
+
+          if (userOnly && !isStaff) return;
           return (
             <li key={n.href}>
               <Link
@@ -105,12 +109,14 @@ function SidebarFooter() {
 
 const Sidebar = ({setDrawer, drawer}: {drawer: boolean, setDrawer: Dispatch<SetStateAction<boolean>>}) => {
       const pathname = usePathname();
-    
+      const {session} = useSession();
+
+      const isStaff = session?.user_validation_info.kind === "user";
   return (
     <>
      <aside className="sticky top-6 hidden h-[calc(100vh-3rem)] w-64 shrink-0 flex-col gap-4 rounded-[2rem] border border-[#E6D9C6] bg-white p-5 lg:flex">
           <Brand />
-          <NavList pathname={pathname ?? ""} />
+          <NavList isStaff={isStaff} pathname={pathname ?? ""} />
           <SidebarFooter />
         </aside>
          {/* mobile drawer */}
@@ -137,7 +143,7 @@ const Sidebar = ({setDrawer, drawer}: {drawer: boolean, setDrawer: Dispatch<SetS
                 <X size={17} />
               </button>
             </div>
-            <NavList pathname={pathname ?? ""} />
+            <NavList isStaff={isStaff} pathname={pathname ?? ""} />
             <SidebarFooter />
           </div>
         </div>

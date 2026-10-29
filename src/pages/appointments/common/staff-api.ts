@@ -34,7 +34,7 @@ export const staffApi = {
       ),
     ),
   branches: async (): Promise<IBranchLite[]> => {
-    const r = await apiClient<IBranchLite[] | Wrapped<IBranchLite[]>>("/branches");
+    const r = await apiClient<IBranchLite[] | Wrapped<IBranchLite[]>>("/users/my/branches");
     return Array.isArray(r) ? r : (r.data ?? []);
   },
 
