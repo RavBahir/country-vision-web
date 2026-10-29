@@ -7,9 +7,9 @@ import { usePathname } from 'next/navigation';
 import { Dispatch, SetStateAction } from 'react';
 import { useLogout, useSession } from '../auth/session';
 
-const NAV: { href: string; label: string; icon: LucideIcon, isUserOnly?: boolean }[] = [
+const NAV: { href: string; label: string; icon: LucideIcon, isUserOnly?: boolean, isCustomerOnly?: boolean }[] = [
   { href: allRoutes.DASHBOARD, label: "Dashboard", icon: LayoutDashboard },
-  { href: allRoutes.APPOINTMENTS, label: "Appointments", icon: CalendarCheck },
+  { href: allRoutes.APPOINTMENTS, label: "Appointments", icon: CalendarCheck, isCustomerOnly: true },
   { href: allRoutes.SCHEDULES, label: "Schedules", icon: CalendarCheck, isUserOnly: true },
   { href: allRoutes.CHECKUPS, label: "Checkups", icon: Eye },
   { href: allRoutes.CATALOG, label: "Catalog", icon: Glasses },
@@ -49,8 +49,10 @@ function NavList({ pathname, isStaff }: { pathname: string, isStaff: boolean }) 
               (n.href || pathname.startsWith(`${allRoutes.PORTAL + n.href}/`));
 
           const userOnly = n.isUserOnly;
+          const customerOnly = n.isCustomerOnly;
 
           if (userOnly && !isStaff) return;
+          if (customerOnly && isStaff) return;
           return (
             <li key={n.href}>
               <Link
