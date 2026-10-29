@@ -6,9 +6,9 @@ import { fmtDate, fmtTime } from "@/lib/format";
 import { usePerms } from "@/lib/use-perms";
 import {
   useChangeStatus, useCustomerPrescriptions, useExamRecord, useStaffAppointment,
-} from "@/pages/appointments/common/staff-api";
-import type { ApptStatus } from "@/pages/appointments/common/appointments";
-import type { IPrescription } from "@/pages/appointments/common/staff";
+} from "@/modules/appointments/common/staff-api";
+import type { ApptStatus } from "@/modules/appointments/common/appointments";
+import type { IPrescription } from "@/modules/appointments/common/staff";
 import { AlertTriangle, ArrowLeft, Clock, Mail, MapPin, Phone, Plus, User } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";

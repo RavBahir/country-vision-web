@@ -1,7 +1,7 @@
 // lib/use-perms.ts
 "use client";
 import { can, type Permission } from "@/lib/permissions";
-import { useSession } from "@/pages/auth/session";
+import { useSession } from "@/modules/auth/session";
 import { useMemo } from "react";
 
 export function usePerms() {

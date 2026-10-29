@@ -6,9 +6,9 @@ import {
 } from "@/components/portal/UI";
 import { fmtDate, fmtTime, toISO } from "@/lib/format";
 import { usePerms } from "@/lib/use-perms";
-import { useStaffAppointments } from "@/pages/appointments/common/staff-api";
-import type { ApptStatus } from "@/pages/appointments/common/appointments";
-import type { IApptFilters, IStaffAppointment } from "@/pages/appointments/common/staff";
+import { useStaffAppointments } from "@/modules/appointments/common/staff-api";
+import type { ApptStatus } from "@/modules/appointments/common/appointments";
+import type { IApptFilters, IStaffAppointment } from "@/modules/appointments/common/staff";
 import { AlertTriangle, CalendarCheck, Plus, Search } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";

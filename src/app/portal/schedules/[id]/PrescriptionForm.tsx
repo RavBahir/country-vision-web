@@ -3,8 +3,8 @@
 
 import { Button, inputCls, Modal } from "@/components/portal/UI";
 import { FormError, SelectField, TextAreaField, TextField } from "@/components/portal/FormFields";
-import { useIssuePrescription } from "@/pages/appointments/common/staff-api";
-import type { IEyeRx, IPrescription, IRxInput, RxType } from "@/pages/appointments/common/staff";
+import { useIssuePrescription } from "@/modules/appointments/common/staff-api";
+import type { IEyeRx, IPrescription, IRxInput, RxType } from "@/modules/appointments/common/staff";
 import { useState, type FormEvent } from "react";
 
 type Eye = "right" | "left";

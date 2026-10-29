@@ -1,7 +1,7 @@
 // app/portal/appointments/AppointmentCard.tsx
 import { Badge, Button, Card } from "@/components/portal/UI";
 import { fmtDate, fmtTime, parseISO } from "@/lib/format";
-import type { IAppointment } from "@/pages/appointments/common/appointments";
+import type { IAppointment } from "@/modules/appointments/common/appointments";
 import { CalendarClock, Clock, MapPin, MessageSquareText, User } from "lucide-react";
 import {
   canChange, CUTOFF_HOURS, isOpen, STATUS_LABEL, STATUS_TONE, TYPE_LABEL,

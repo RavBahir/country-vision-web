@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { ACCOUNT_TYPE } from "./page";
 import { allRoutes } from "@/routes/routes";
-import { useLoginCustomer, useLoginUser } from "@/pages/auth/auth-api";
+import { useLoginCustomer, useLoginUser } from "@/modules/auth/auth-api";
 import {
   ChangeEventHandler,
   FormEvent,
@@ -28,7 +28,7 @@ import {
   useState,
 } from "react";
 import { useRouter } from "next/navigation";
-import { useSelfCreateCustomer } from "@/pages/customers/common/customers-api";
+import { useSelfCreateCustomer } from "@/modules/customers/common/customers-api";
 import { showToast } from "@/components/CustomToast";
 
 /* ------------------------------------------------------------------ */

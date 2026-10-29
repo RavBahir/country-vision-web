@@ -87,7 +87,7 @@ function Footer({ onNavigate }: { onNavigate: (id: string) => void }) {
             <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer">
               WhatsApp us
             </a>
-            <a href="/login">Login</a>
+            {/* <a href="/login">Login</a> */}
           </FooterCol>
         </div>
       </Reveal>

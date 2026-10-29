@@ -1,9 +1,9 @@
 "use client";
 
 import { showToast } from "@/components/CustomToast";
-import { useSession } from "@/pages/auth/session";
-import TopNav from "@/pages/layout/Header";
-import Sidebar from "@/pages/layout/Sidebar";
+import { useSession } from "@/modules/auth/session";
+import TopNav from "@/modules/layout/Header";
+import Sidebar from "@/modules/layout/Sidebar";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 

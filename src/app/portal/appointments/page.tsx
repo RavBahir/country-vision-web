@@ -5,15 +5,15 @@ import { Button, EmptyState, Modal, PageHeader, Segmented, Toast } from "@/compo
 import { fmtDate, fmtTime } from "@/lib/format";
 import {
   useBranches, useCancelAppointment, useGetAllAppointments, useMyAppointments,
-} from "@/pages/appointments/common/appointments-api";
-import type { ApptType, IAppointment } from "@/pages/appointments/common/appointments";
+} from "@/modules/appointments/common/appointments-api";
+import type { ApptType, IAppointment } from "@/modules/appointments/common/appointments";
 import { AlertTriangle, CalendarCheck, Plus } from "lucide-react";
 import { useMemo, useState } from "react";
 import BookingModal from "./AppointmentBookingModal";
 import AppointmentCard from "./AppointmentCard";
 import ClinicDetailsSection from "./ClinicDetailsSection";
 import { isOpen, TYPE_LABEL, type IAppointmentTab } from "./common";
-import { useSession } from "@/pages/auth/session";
+import { useSession } from "@/modules/auth/session";
 
 type Editing = { appt: IAppointment | null; presetType?: ApptType } | null;
 

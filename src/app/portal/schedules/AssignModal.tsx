@@ -5,8 +5,8 @@ import { Button, Modal } from "@/components/portal/UI";
 import { SelectField, FormError, TextAreaField } from "@/components/portal/FormFields";
 import {
   useChangeStatus, useOptometrists, useStaffUpdate,
-} from "@/pages/appointments/common/staff-api";
-import type { IStaffAppointment } from "@/pages/appointments/common/staff";
+} from "@/modules/appointments/common/staff-api";
+import type { IStaffAppointment } from "@/modules/appointments/common/staff";
 import { useState, type FormEvent } from "react";
 
 /** "approve" moves pending -> approved. "reassign" only swaps the optometrist. */

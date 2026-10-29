@@ -1,5 +1,5 @@
 // app/portal/appointments/common.ts
-import type { ApptStatus, ApptType, IAppointment } from "@/pages/appointments/common/appointments";
+import type { ApptStatus, ApptType, IAppointment } from "@/modules/appointments/common/appointments";
 
 export type IAppointmentTab = "upcoming" | "past" | "cancelled";
 

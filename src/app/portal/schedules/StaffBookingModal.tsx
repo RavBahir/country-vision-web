@@ -4,12 +4,12 @@
 import { Button, inputCls, Modal } from "@/components/portal/UI";
 import { FormError, SelectField } from "@/components/portal/FormFields";
 import { fmtTime, toISO } from "@/lib/format";
-import { useGetCustomers } from "@/pages/customers/common/customers-api";
+import { useGetCustomers } from "@/modules/customers/common/customers-api";
 import {
   useOptometrists, useStaffAvailability, useStaffBook, useStaffBranches, useStaffUpdate,
-} from "@/pages/appointments/common/staff-api";
-import type { ApptType } from "@/pages/appointments/common/appointments";
-import type { IStaffAppointment } from "@/pages/appointments/common/staff";
+} from "@/modules/appointments/common/staff-api";
+import type { ApptType } from "@/modules/appointments/common/appointments";
+import type { IStaffAppointment } from "@/modules/appointments/common/staff";
 import { useMemo, useState, type FormEvent } from "react";
 import { TYPE_OPTIONS } from "./common";
 

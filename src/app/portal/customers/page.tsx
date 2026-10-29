@@ -12,8 +12,8 @@ import {
   Toast,
 } from "@/components/portal/UI";
 import { fmtDate } from "@/lib/format";
-import { useGetCustomers } from "@/pages/customers/common/customers-api";
-import type { ICustomer } from "@/pages/customers/common/customers";
+import { useGetCustomers } from "@/modules/customers/common/customers-api";
+import type { ICustomer } from "@/modules/customers/common/customers";
 import {
   AlertTriangle,
   Edit2,
@@ -23,7 +23,7 @@ import {
   Users,
 } from "lucide-react";
 import { useMemo, useState } from "react";
-import CustomerForm from "@/pages/customers/component/CustomerForm";
+import CustomerForm from "@/modules/customers/component/CustomerForm";
 import { format } from "date-fns";
 
 type Tone = "success" | "warn" | "neutral" | "danger";

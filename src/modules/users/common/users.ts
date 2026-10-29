@@ -1,5 +1,5 @@
 import { BASIC_STATUS } from "@/lib/enums";
-import { IBranch, IRole } from "@/pages/auth/auth";
+import { IBranch, IRole } from "@/modules/auth/auth";
 
 export interface IUser {
   id: string;

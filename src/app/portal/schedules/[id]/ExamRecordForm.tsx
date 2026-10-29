@@ -5,8 +5,8 @@ import { Button } from "@/components/portal/UI";
 import {
   FormError, FormSection, TextAreaField, TextField,
 } from "@/components/portal/FormFields";
-import { useSaveExamRecord } from "@/pages/appointments/common/staff-api";
-import type { IExamInput, IExamRecord } from "@/pages/appointments/common/staff";
+import { useSaveExamRecord } from "@/modules/appointments/common/staff-api";
+import type { IExamInput, IExamRecord } from "@/modules/appointments/common/staff";
 import { useState, type FormEvent } from "react";
 
 const s = (v: unknown) => (v === null || v === undefined ? "" : String(v));

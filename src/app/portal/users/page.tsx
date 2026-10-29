@@ -12,8 +12,8 @@ import {
 } from "@/components/portal/UI";
 import { BASIC_STATUS } from "@/lib/enums";
 import { fmtDate } from "@/lib/format";
-import { useGetUsers } from "@/pages/users/common/users-api";
-import type { IUser } from "@/pages/users/common/users"; // adjust if IUser lives elsewhere
+import { useGetUsers } from "@/modules/users/common/users-api";
+import type { IUser } from "@/modules/users/common/users"; // adjust if IUser lives elsewhere
 import {
   AlertTriangle,
   Edit2,
@@ -23,9 +23,9 @@ import {
   Users,
 } from "lucide-react";
 import { useMemo, useState } from "react";
-import UserForm from "@/pages/users/component/UsersForm";
-import { useGetRoles } from "@/pages/roles/common/roles-api";
-import { IRole } from "@/pages/auth/auth";
+import UserForm from "@/modules/users/component/UsersForm";
+import { useGetRoles } from "@/modules/roles/common/roles-api";
+import { IRole } from "@/modules/auth/auth";
 import { format } from "date-fns";
 
 type StatusFilter = "all" | BASIC_STATUS;

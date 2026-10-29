@@ -1,5 +1,5 @@
 // app/portal/schedule/common.ts
-import type { ApptStatus } from "@/pages/appointments/common/appointments";
+import type { ApptStatus } from "@/modules/appointments/common/appointments";
 import { allRoutes } from "@/routes/routes";
 
 export { STATUS_TONE, TYPE_LABEL, TYPE_OPTIONS } from "@/app/portal/appointments/common";

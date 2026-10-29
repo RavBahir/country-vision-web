@@ -1,14 +1,14 @@
 "use client";
 
-import About from "@/pages/website/About";
-import Contact from "@/pages/website/Contact";
-import ContactCta from "@/pages/website/ContactCTA";
-import EyeCare from "@/pages/website/EyeCare";
-import Eyewear from "@/pages/website/EyeWear";
-import Footer from "@/pages/website/Footer";
-import Hero from "@/pages/website/Hero";
-import Lenses from "@/pages/website/Lenses";
-import Reviews from "@/pages/website/Reviews";
+import About from "@/modules/website/About";
+import Contact from "@/modules/website/Contact";
+import ContactCta from "@/modules/website/ContactCTA";
+import EyeCare from "@/modules/website/EyeCare";
+import Eyewear from "@/modules/website/EyeWear";
+import Footer from "@/modules/website/Footer";
+import Hero from "@/modules/website/Hero";
+import Lenses from "@/modules/website/Lenses";
+import Reviews from "@/modules/website/Reviews";
 import {
   useEffect
 } from "react";

@@ -5,8 +5,8 @@ import { Button, inputCls, Modal } from "@/components/portal/UI";
 import { fmtTime, toISO } from "@/lib/format";
 import {
   useAvailability, useBookAppointment, useChangeAppointment,
-} from "@/pages/appointments/common/appointments-api";
-import type { ApptType, IAppointment, IBranchLite } from "@/pages/appointments/common/appointments";
+} from "@/modules/appointments/common/appointments-api";
+import type { ApptType, IAppointment, IBranchLite } from "@/modules/appointments/common/appointments";
 import { useState, type FormEvent } from "react";
 import { CUTOFF_HOURS, TYPE_OPTIONS } from "./common";
 

@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/api-client";
-import { IRole } from "@/pages/auth/auth";
+import { IRole } from "@/modules/auth/auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { roleKeys } from "./roles";
 

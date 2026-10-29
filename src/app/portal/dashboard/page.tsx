@@ -29,7 +29,7 @@ import DashboardRecentTransactions from "./DashboardRecentTransactions";
 import DashboardReorderCard from "./DashboardReorderCard";
 import DashboardStats from "./DashboardStats";
 import DashboardUpcoming from "./DashboardUpcoming";
-import { useSession } from "@/pages/auth/session";
+import { useSession } from "@/modules/auth/session";
 
 export default function DashboardPage() {
   const todayISO = toISO(TODAY);

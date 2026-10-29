@@ -3,8 +3,8 @@
 
 import { Badge, Button, Card } from "@/components/portal/UI";
 import { fmtDate } from "@/lib/format";
-import { useVoidPrescription } from "@/pages/appointments/common/staff-api";
-import type { IEyeRx, IPrescription } from "@/pages/appointments/common/staff";
+import { useVoidPrescription } from "@/modules/appointments/common/staff-api";
+import type { IEyeRx, IPrescription } from "@/modules/appointments/common/staff";
 
 const f = (v: number | null, signed = true) =>
   v === null ? "–" : `${signed && v > 0 ? "+" : ""}${v.toFixed(2)}`;
