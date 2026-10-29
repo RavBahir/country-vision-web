@@ -14,6 +14,7 @@ export interface IUser {
   currenntBranchId?: string
   currentBranch?: IBranch
   isSuperAdmin?: boolean
+  isOptometrist?: boolean
   createdAt?: string
   updatedAt?: string
 }

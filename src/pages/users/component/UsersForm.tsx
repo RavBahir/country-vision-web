@@ -14,6 +14,7 @@ import { IUser } from "../common/users";
 import { useCreateUser, useUpdateUser } from "../common/users-api";
 import { BASIC_STATUS } from "@/lib/enums";
 import { showToast } from "@/components/CustomToast";
+import CustomToggler from "@/components/CustomToggler";
 
 type Props = {
   /** null = create, a user = edit */
@@ -51,6 +52,10 @@ export default function UserForm({
   onSaved,
 }: Props) {
   const isEdit = Boolean(initial);
+  const [isOptometrist, setIsOptometrist] = useState<boolean>(() => {
+    if (isEdit && initial) return !!initial?.isOptometrist;
+    return false;
+  });
 
   // Adjust these reads if IUser names them differently.
   const [values, setValues] = useState<Values>({
@@ -108,6 +113,7 @@ export default function UserForm({
       roleId: values.roleId,
       branchId: values.branchId || undefined,
       status: isEdit ? (values.status as BASIC_STATUS) : BASIC_STATUS.Active,
+      isOptometrist: isOptometrist,
       // Never send an empty password when editing
       ...(values.password ? { password: values.password } : {}),
     };
@@ -197,6 +203,12 @@ export default function UserForm({
         </FormSection>
 
         <FormSection title="Access">
+          <CustomToggler 
+          setState={setIsOptometrist}
+          state={isOptometrist}
+          title="Is Optometrist?"
+          description="Turn this on if user is an optometrist"
+          />
           <SelectField
             label="Role"
             value={values.roleId}

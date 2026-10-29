@@ -190,11 +190,12 @@ export default function SchedulePage() {
                 <Card className="p-5">
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
+                      <p className="mt-1 text-xs text-[#1F1A15]/50">{a.code}</p>
                       <p className="truncate font-medium">{a.customer.name}</p>
                       <p className="mt-1 text-xs text-[#1F1A15]/50">
                         {fmtDate(a.date, { day: "numeric", month: "short" })} · {fmtTime(a.time)} · {TYPE_LABEL[a.type]}
                       </p>
-                      <p className="mt-1 text-xs text-[#1F1A15]/50">{a.optometrist?.name ?? "Unassigned"}</p>
+                      <p className="mt-1 text-xs text-[#1F1A15]/50">Optometrist: <b>{a.optometrist?.name ?? "Unassigned"}</b> </p>
                     </div>
                     <Badge tone={STATUS_TONE[a.status]}>{STAFF_STATUS_LABEL[a.status]}</Badge>
                   </div>

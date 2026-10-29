@@ -42,7 +42,7 @@ const LABEL: Record<BASIC_STATUS, string> = {
   archived: "Archived",
 };
 
-const roleName = (u: IRole) => (u.name as string | undefined) ?? "-";
+const roleName = (u: IUser) => (u.role.name as string | undefined) ?? "-";
 
 function StatusBadge({ status }: { status?: string | null }) {
   const s = (status ?? "inactive") as BASIC_STATUS;
@@ -335,7 +335,7 @@ export default function UsersPage() {
                         {u.email}
                       </p>
                       <p className="mt-1 text-xs text-[#1F1A15]/50">
-                        {roleName(u)}
+                        {roleName(u)} - {" "}
                         {u.createdAt
                           ? format(u.createdAt as string, "dd/MM/yyyy")
                           : "-"}

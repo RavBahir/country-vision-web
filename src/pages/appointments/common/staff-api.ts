@@ -26,7 +26,7 @@ export const staffApi = {
     unwrap(apiClient<Wrapped<IStaffAppointment[]>>(`/appointments${qs({ ...f })}`)),
   get: (id: string) => unwrap(apiClient<Wrapped<IStaffAppointment>>(`/appointments/${id}`)),
   optometrists: (branchId?: string) =>
-    unwrap(apiClient<Wrapped<IOptometrist[]>>(`/appointments/optometrists${qs({ branchId })}`)),
+    unwrap(apiClient<Wrapped<IOptometrist[]>>(`/users/optometrists${qs({ branchId })}`)),
   availability: (date: string, branchId?: string, optometristId?: string) =>
     unwrap(
       apiClient<Wrapped<IAvailability>>(
