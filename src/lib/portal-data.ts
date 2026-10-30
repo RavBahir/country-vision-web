@@ -291,15 +291,15 @@ export interface IAppointment {
   notes?: string;
 }
 
-export const APPOINTMENTS: IAppointment[] = [
-  { id: "a1", type: "Eye checkup", date: "2026-10-16", time: "09:30", clinician: "Dr. Ngozi Eze", location: CLINIC.name, status: "confirmed", notes: "6-month review after prescription change." },
-  { id: "a2", type: "Frame fitting", date: "2026-10-22", time: "14:00", clinician: "Tunde Bello (Optician)", location: CLINIC.name, status: "pending" },
-  { id: "a3", type: "Follow-up", date: "2026-11-05", time: "11:30", clinician: "Dr. Kelechi Adebayo", location: CLINIC.name, status: "confirmed" },
-  { id: "a4", type: "Eye checkup", date: "2026-04-18", time: "10:00", clinician: "Dr. Ngozi Eze", location: CLINIC.name, status: "completed" },
-  { id: "a5", type: "Collection", date: "2026-05-02", time: "13:30", clinician: "Tunde Bello (Optician)", location: CLINIC.name, status: "completed" },
-  { id: "a6", type: "Eye checkup", date: "2025-10-06", time: "10:30", clinician: "Dr. Ngozi Eze", location: CLINIC.name, status: "completed" },
-  { id: "a7", type: "Contact lens fitting", date: "2026-03-09", time: "15:00", clinician: "Dr. Kelechi Adebayo", location: CLINIC.name, status: "cancelled" },
-];
+export const APPOINTMENTS: IAppointment[] = []
+//   { id: "a1", type: "Eye checkup", date: "2026-10-16", time: "09:30", clinician: "Dr. Ngozi Eze", location: CLINIC.name, status: "confirmed", notes: "6-month review after prescription change." },
+//   { id: "a2", type: "Frame fitting", date: "2026-10-22", time: "14:00", clinician: "Tunde Bello (Optician)", location: CLINIC.name, status: "pending" },
+//   { id: "a3", type: "Follow-up", date: "2026-11-05", time: "11:30", clinician: "Dr. Kelechi Adebayo", location: CLINIC.name, status: "confirmed" },
+//   { id: "a4", type: "Eye checkup", date: "2026-04-18", time: "10:00", clinician: "Dr. Ngozi Eze", location: CLINIC.name, status: "completed" },
+//   { id: "a5", type: "Collection", date: "2026-05-02", time: "13:30", clinician: "Tunde Bello (Optician)", location: CLINIC.name, status: "completed" },
+//   { id: "a6", type: "Eye checkup", date: "2025-10-06", time: "10:30", clinician: "Dr. Ngozi Eze", location: CLINIC.name, status: "completed" },
+//   { id: "a7", type: "Contact lens fitting", date: "2026-03-09", time: "15:00", clinician: "Dr. Kelechi Adebayo", location: CLINIC.name, status: "cancelled" },
+// ];
 
 /* ---------- Checkups ---------- */
 
