@@ -21,9 +21,12 @@ const CRUD = ["View", "Create", "Update", "Delete"] as const;
 const NO_DELETE = ["View", "Create", "Update"] as const; // payments: refund = update
 const VIEW_UPDATE = ["View", "Update"] as const; // company profile
 const VIEW_ONLY = ["View"] as const; // audit log
+const VIEW_UPDATE_DELETE = ["View", "Update", "Delete"] as const;
 
+// inside RESOURCES
 /** Single source of truth. Remove any resource your app doesn't have yet. */
 const RESOURCES = [
+  { id: "Enquiries", noun: "website enquiries", group: "People", actions: VIEW_UPDATE_DELETE },
   { id: "Appointments", noun: "appointments", group: "Clinic", actions: CRUD },
   { id: "Prescriptions", noun: "prescriptions", group: "Clinic", actions: CRUD },
   { id: "ExamRecords", noun: "exam records", group: "Clinic", actions: CRUD },

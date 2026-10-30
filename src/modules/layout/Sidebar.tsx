@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   LogOut,
   LucideIcon,
+  MessageCircleQuestionMark,
   Receipt,
   User2,
   UserRoundKey,
@@ -48,6 +49,7 @@ const NAV: ISidebarNav[] = [
   { href: allRoutes.CATALOG, label: "Catalog", icon: Glasses , isComingSoon: true},
   { href: allRoutes.TRANSACTIONS, label: "Transactions", icon: Receipt, isComingSoon: true},
   { href: allRoutes.CALENDAR, label: "Calendar", icon: CalendarDays },
+  { href: allRoutes.ENQUIRIES, label: "Enquiries", icon: MessageCircleQuestionMark, isUserOnly: true },
   {
     href: allRoutes.CUSTOMERS,
     label: "Customers",
