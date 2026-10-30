@@ -21,6 +21,17 @@ const qs = (o: Record<string, unknown>) => {
   return s ? `?${s}` : "";
 };
 
+function useRefresh() {
+  const qc = useQueryClient();
+  return () =>
+    Promise.all([
+      qc.invalidateQueries({ queryKey: staffKeys.all }),   // ["appointments", ...]
+      qc.invalidateQueries({ queryKey: ["prescriptions"] }),
+      qc.invalidateQueries({ queryKey: ["calendar"] }),    // new
+      qc.invalidateQueries({ queryKey: ["dashboard"] }),   // new
+    ]);
+}
+
 export const staffApi = {
   list: (f: IApptFilters) =>
     unwrap(apiClient<Wrapped<IStaffAppointment[]>>(`/appointments${qs({ ...f })}`)),
@@ -99,15 +110,6 @@ export const useCustomerPrescriptions = (customerId: string, enabled: boolean) =
   });
 
 /* ---------- mutations ---------- */
-
-function useRefresh() {
-  const qc = useQueryClient();
-  return () =>
-    Promise.all([
-      qc.invalidateQueries({ queryKey: staffKeys.all }),
-      qc.invalidateQueries({ queryKey: ["prescriptions"] }),
-    ]);
-}
 
 export function useStaffBook() {
   const refresh = useRefresh();

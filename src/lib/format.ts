@@ -1,5 +1,4 @@
-/** Mock "today" so the demo data stays coherent. Replace with `new Date()` when wiring real data. */
-export const TODAY = new Date(2026, 9, 12);
+export const TODAY = new Date();
 
 /** Change this to match your market (e.g. "GHS"). */
 export const CURRENCY = "GHS";

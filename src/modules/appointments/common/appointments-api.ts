@@ -61,7 +61,13 @@ export const useBranches = () =>
 /** Refreshes the list and any cached slots, since a booking changes both. */
 function useRefresh() {
   const qc = useQueryClient();
-  return () => qc.invalidateQueries({ queryKey: apptKeys.all });
+  return () =>
+    Promise.all([
+      qc.invalidateQueries({ queryKey: apptKeys.all }),    // ["my-appointments", ...]
+      qc.invalidateQueries({ queryKey: ["calendar"] }),    // new
+      qc.invalidateQueries({ queryKey: ["dashboard"] }),   // new
+      qc.invalidateQueries({ queryKey: ["my-checkups"] }), // new, optional
+    ]);
 }
 
 export function useBookAppointment() {
