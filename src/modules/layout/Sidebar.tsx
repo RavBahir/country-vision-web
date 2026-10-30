@@ -12,6 +12,7 @@ import {
   LucideIcon,
   Receipt,
   User2,
+  UserRoundKey,
   Users,
   X,
 } from "lucide-react";
@@ -54,6 +55,7 @@ const NAV: ISidebarNav[] = [
     isUserOnly: true,
   },
   { href: allRoutes.USERS, label: "Users", icon: User2, isUserOnly: true },
+  { href: allRoutes.ROLES, label: "Roles", icon: UserRoundKey, isUserOnly: true },
 ];
 
 function Brand() {

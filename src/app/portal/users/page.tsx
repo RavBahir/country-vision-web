@@ -24,8 +24,7 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import UserForm from "@/modules/users/component/UsersForm";
-import { useGetRoles } from "@/modules/roles/common/roles-api";
-import { IRole } from "@/modules/auth/auth";
+import { useRoles } from "@/modules/roles/common/roles-api";
 import { format } from "date-fns";
 
 type StatusFilter = "all" | BASIC_STATUS;
@@ -117,7 +116,7 @@ export default function UsersPage() {
     refetch();
   };
 
-  const { data: roles } = useGetRoles();
+  const { data: roles } = useRoles();
 
   // Role filter options come from the data itself.
   const roleOptions = useMemo(() => {

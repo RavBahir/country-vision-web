@@ -9,6 +9,7 @@ export const allRoutes = Object.freeze({
   CHECKUPS: "/checkups",
   PROFILE: "/profile",
   USERS: "/users",
+  ROLES: "/roles",
   CUSTOMERS: "/customers",
   CATALOG: "/catalog",
   TRANSACTIONS: "/transactions",

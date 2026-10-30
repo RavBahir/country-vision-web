@@ -207,3 +207,16 @@ const LEGACY_MAP: Record<string, Permission[]> = {
 export function migrateLegacyPermissions(old: string[]): string[] {
   return sanitizePermissions(old.flatMap((k) => LEGACY_MAP[k] ?? (VALID.has(k) ? [k] : [])));
 }
+
+/** Rows for the role editor: one row per resource (View/Create/Update/Delete), plus one-off toggles. */
+export function permissionMatrix() {
+  return GROUP_ORDER.map((group) => ({
+    group,
+    resources: RESOURCE_LIST.filter((r) => r.group === group).map((r) => ({
+      id: r.id,
+      noun: r.noun,
+      actions: r.actions as readonly Action[],
+    })),
+    extras: EXTRA.filter((e) => e.group === group) as readonly PermissionDef[],
+  })).filter((g) => g.resources.length > 0 || g.extras.length > 0);
+}

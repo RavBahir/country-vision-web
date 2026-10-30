@@ -1,99 +1,60 @@
+// pages/roles/common/roles-api.ts
 import { apiClient } from "@/lib/api-client";
-import { IRole } from "@/modules/auth/auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { roleKeys } from "./roles";
+import { roleKeys, type IRole, type IRoleInput } from "./roles";
+import { sessionKey } from "@/modules/auth/session";
 
-type ListResponse<T> = T[] | { data?: T[]; roles?: T[]; items?: T[]; results?: T[] };
-
-const toArray = <T,>(res: ListResponse<T> | null | undefined): T[] => {
-  if (Array.isArray(res)) return res;
-  return res?.data ?? res?.roles ?? res?.items ?? res?.results ?? [];
-};
+type Wrapped<T> = { data: T };
+const unwrap = <T,>(p: Promise<Wrapped<T>>) => p.then((r) => r.data);
 
 export const rolesApi = {
-  getAll: async () => toArray(await apiClient<ListResponse<IRole>>("/roles")),
-  // getAll: () => apiClient<IRole[]>("/roles"),
-
-  getById: (id: string) => apiClient<Partial<IRole>>(`/roles/${id}`),
-
-  create: (data: Partial<IRole>) =>
-    apiClient<IRole>("/roles", {
-      method: "POST",
-      body: data,
-    }),
-
-  update: (id: string, data: Partial<IRole>) =>
-    apiClient<IRole>(`/roles/${id}`, {
-      method: "PATCH",
-      body: data,
-    }),
-
-  delete: (id: string) =>
-    apiClient<void>(`/roles/${id}`, {
-      method: "DELETE",
-    }),
+  list: () => unwrap(apiClient<Wrapped<IRole[]>>("/roles")),
+  get: (id: string) => unwrap(apiClient<Wrapped<IRole>>(`/roles/${id}`)),
+  create: (body: IRoleInput) => unwrap(apiClient<Wrapped<IRole>>("/roles", { method: "POST", body })),
+  update: (id: string, body: Partial<IRoleInput>) =>
+    unwrap(apiClient<Wrapped<IRole>>(`/roles/${id}`, { method: "PATCH", body })),
+  remove: (id: string) => apiClient<Wrapped<{ id: string }>>(`/roles/${id}`, { method: "DELETE" }),
 };
 
-export function useGetRoles() {
-  return useQuery({
-    queryKey: roleKeys.lists(),
-    queryFn: rolesApi.getAll,
-  });
+export const useRoles = (enabled = true) =>
+  useQuery({ queryKey: roleKeys.list(), queryFn: rolesApi.list, enabled, staleTime: 30_000 });
+
+export const useRole = (id: string, enabled = true) =>
+  useQuery({ queryKey: roleKeys.detail(id), queryFn: () => rolesApi.get(id), enabled: enabled && Boolean(id) });
+
+/** For dropdowns, e.g. the staff form's role picker. */
+export function useRoleOptions() {
+  const q = useRoles();
+  const options = (q.data ?? [])
+    .filter((r) => r.status !== "inactive")
+    .map((r) => ({ value: r.id, label: r.name }));
+  return { ...q, options };
 }
 
-export function useGetRole(id: string) {
-  return useQuery({
-    queryKey: roleKeys.detail(id),
-    queryFn: () => rolesApi.getById(id),
-    enabled: Boolean(id),
-  });
+function useRefresh() {
+  const qc = useQueryClient();
+  return () =>
+    Promise.all([
+      qc.invalidateQueries({ queryKey: roleKeys.all }),
+      qc.invalidateQueries({ queryKey: ["users"] }),   // use your real userKeys base
+      qc.invalidateQueries({ queryKey: sessionKey }),  // editing your own role changes your permissions
+    ]);
 }
 
 export function useCreateRole() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (data: Partial<IRole>) => rolesApi.create(data),
-
-    onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: roleKeys.lists(),
-      }),
-  });
+  const refresh = useRefresh();
+  return useMutation({ mutationFn: rolesApi.create, onSettled: refresh });
 }
 
 export function useUpdateRole() {
-  const queryClient = useQueryClient();
-
+  const refresh = useRefresh();
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<IRole> }) =>
-      rolesApi.update(id, data),
-
-    onSuccess: (role) => {
-      queryClient.setQueryData(roleKeys.detail(role.id), role);
-
-      return queryClient.invalidateQueries({
-        queryKey: roleKeys.lists(),
-      });
-    },
+    mutationFn: ({ id, data }: { id: string; data: Partial<IRoleInput> }) => rolesApi.update(id, data),
+    onSettled: refresh,
   });
 }
 
 export function useDeleteRole() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: rolesApi.delete,
-
-    onSuccess: (_, id) => {
-      queryClient.removeQueries({
-        queryKey: roleKeys.detail(id),
-        exact: true,
-      });
-
-      return queryClient.invalidateQueries({
-        queryKey: roleKeys.lists(),
-      });
-    },
-  });
+  const refresh = useRefresh();
+  return useMutation({ mutationFn: rolesApi.remove, onSettled: refresh });
 }
