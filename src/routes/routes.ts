@@ -10,6 +10,7 @@ export const allRoutes = Object.freeze({
   PROFILE: "/profile",
   USERS: "/users",
   ROLES: "/roles",
+  AUDIT: "/audit",
   CUSTOMERS: "/customers",
   ENQUIRIES: "/enquiries",
   CATALOG: "/catalog",

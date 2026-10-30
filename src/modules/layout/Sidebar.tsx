@@ -12,6 +12,7 @@ import {
   LucideIcon,
   MessageCircleQuestionMark,
   Receipt,
+  ShieldAlert,
   User2,
   UserRoundKey,
   Users,
@@ -58,9 +59,11 @@ const NAV: ISidebarNav[] = [
   },
   { href: allRoutes.USERS, label: "Users", icon: User2, isUserOnly: true },
   { href: allRoutes.ROLES, label: "Roles", icon: UserRoundKey, isUserOnly: true },
+  { href: allRoutes.AUDIT, label: "Audit Trail", icon: ShieldAlert, isUserOnly: true },
 ];
 
 function Brand() {
+  const {session} = useSession()
   return (
     <Link
       href={allRoutes.PORTAL + allRoutes.DASHBOARD}
@@ -70,7 +73,7 @@ function Brand() {
       <span className="leading-none">
         <span className="block text-sm font-semibold">Country Vision</span>
         <span className="mt-0.5 block text-[9px] tracking-[0.25em] text-[#1F1A15]/55 uppercase">
-          Client Portal
+          {session?.kind === "user" ? "Staff Portal" : "Client Portal"}
         </span>
       </span>
     </Link>

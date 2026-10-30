@@ -1,6 +1,6 @@
 import { TODAY } from "@/lib/format";
 import { allRoutes } from "@/routes/routes";
-import { Bell, Menu } from "lucide-react";
+import { Bell, CalendarDays, Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -111,16 +111,24 @@ const TopNav = ({
       </div>
 
       <div className="flex items-center gap-2">
+        <Link href={allRoutes.PORTAL + allRoutes.CALENDAR}>
+          <button
+            className="relative grid h-10 w-10 place-items-center hover:cursor-pointer rounded-full border border-[#E6D9C6] hover:bg-[#F1E7D8]"
+            >
+            <CalendarDays size={17} />
+          </button>
+            </Link>
         <div ref={bellRef} className="relative">
           <button
             onClick={() => setBell((b) => !b)}
             aria-expanded={bell}
             aria-label="Notifications, 3 unread"
-            className="relative grid h-10 w-10 place-items-center rounded-full border border-[#E6D9C6] hover:bg-[#F1E7D8]"
+            className="relative grid h-10 w-10 hover:cursor-pointer place-items-center rounded-full border border-[#E6D9C6] hover:bg-[#F1E7D8]"
           >
             <Bell size={17} />
             <span className="absolute top-2 right-2.5 h-2 w-2 rounded-full bg-[#C2542D]" />
           </button>
+          
           {bell && (
             <div className="absolute right-0 z-40 mt-3 w-80 max-w-[calc(100vw-2rem)] rounded-3xl border border-[#E6D9C6] bg-white p-2 shadow-xl">
               <p className="px-4 pt-3 pb-2 text-xs font-medium tracking-[0.18em] text-[#8A6A4A] uppercase">
