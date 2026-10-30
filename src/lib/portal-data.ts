@@ -18,7 +18,7 @@ export const CLINIC = {
 };
 
 export const CLINICIANS = ["Dr. Ngozi Eze", "Dr. Kelechi Adebayo", "Tunde Bello (Optician)"] as const;
-export const APPT_TYPES = ["Eye checkup", "Contact lens fitting", "Frame fitting", "Follow-up", "Collection"] as const;
+export const APPT_TYPES = ["eye_checkup", "contact_lens_fitting", "frame_fitting", "follow_up", "collection"] as const;
 export const TIME_SLOTS = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30"] as const;
 
 export type ApptType = (typeof APPT_TYPES)[number];

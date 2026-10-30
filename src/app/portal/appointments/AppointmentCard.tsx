@@ -2,11 +2,24 @@
 import { Badge, Button, Card } from "@/components/portal/UI";
 import { fmtDate, fmtTime, parseISO } from "@/lib/format";
 import type { IAppointment } from "@/modules/appointments/common/appointments";
-import { CalendarClock, Clock, MapPin, MessageSquareText, User } from "lucide-react";
 import {
-  canChange, CUTOFF_HOURS, isOpen, STATUS_LABEL, STATUS_TONE, TYPE_LABEL,
+  CalendarClock,
+  Clock,
+  MapPin,
+  MessageSquareText,
+  User,
+} from "lucide-react";
+import {
+  canChange,
+  CUTOFF_HOURS,
+  isOpen,
+  STATUS_LABEL,
+  STATUS_TONE,
+  TYPE_LABEL,
   type IAppointmentTab,
 } from "./common";
+import Link from "next/link";
+import { allRoutes } from "@/routes/routes";
 
 type Props = {
   appointment: IAppointment;
@@ -16,7 +29,13 @@ type Props = {
   onBookAgain: (a: IAppointment) => void;
 };
 
-export default function AppointmentCard({ appointment: a, tab, onReschedule, onCancel, onBookAgain }: Props) {
+export default function AppointmentCard({
+  appointment: a,
+  tab,
+  onReschedule,
+  onCancel,
+  onBookAgain,
+}: Props) {
   const changeable = canChange(a);
   const open = isOpen(a);
 
@@ -28,7 +47,9 @@ export default function AppointmentCard({ appointment: a, tab, onReschedule, onC
             <span className="block text-[11px] tracking-wide text-[#8A6A4A] uppercase">
               {fmtDate(a.date, { month: "short" })}
             </span>
-            <b className="mt-1 block text-3xl font-semibold">{parseISO(a.date).getDate()}</b>
+            <b className="mt-1 block text-3xl font-semibold">
+              {parseISO(a.date).getDate()}
+            </b>
             <span className="mt-1 block text-[11px] text-[#1F1A15]/50">
               {fmtDate(a.date, { weekday: "short" })}
             </span>
@@ -44,7 +65,11 @@ export default function AppointmentCard({ appointment: a, tab, onReschedule, onC
           <ul className="mt-2 grid gap-1.5 text-sm text-[#1F1A15]/60">
             <li className="flex items-center gap-2">
               <Clock size={14} /> {fmtTime(a.time)} ·{" "}
-              {fmtDate(a.date, { year: "numeric", day: "numeric", month: "long" })}
+              {fmtDate(a.date, {
+                year: "numeric",
+                day: "numeric",
+                month: "long",
+              })}
             </li>
             <li className="flex items-center gap-2">
               <User size={14} /> {a.clinician ?? "Optometrist to be assigned"}
@@ -63,7 +88,9 @@ export default function AppointmentCard({ appointment: a, tab, onReschedule, onC
           )}
 
           {a.notes && (
-            <p className="mt-3 rounded-xl bg-[#FBF6EE] px-4 py-2.5 text-sm text-[#1F1A15]/65">{a.notes}</p>
+            <p className="mt-3 rounded-xl bg-[#FBF6EE] px-4 py-2.5 text-sm text-[#1F1A15]/65">
+              {a.notes}
+            </p>
           )}
 
           {a.status === "completed" && a.detail?.recommendations && (
@@ -71,45 +98,77 @@ export default function AppointmentCard({ appointment: a, tab, onReschedule, onC
               <p className="flex items-center gap-2 font-medium">
                 <MessageSquareText size={14} /> From your optometrist
               </p>
-              <p className="mt-1 text-[#1F1A15]/70">{a.detail.recommendations}</p>
+              <p className="mt-1 text-[#1F1A15]/70">
+                {a.detail.recommendations}
+              </p>
+              <Link
+                href={allRoutes.PORTAL + allRoutes.CHECKUPS} // use your real route constant
+                className="mt-3 inline-block border-b border-[#8A6A4A]/50 text-sm font-medium"
+              >
+                View full exam record
+              </Link>
               {a.detail.followUpDate && (
                 <p className="mt-2 flex items-center gap-2 text-[#1F1A15]/60">
                   <CalendarClock size={14} /> Follow-up around{" "}
-                  {fmtDate(a.detail.followUpDate.slice(0, 10), { day: "numeric", month: "long", year: "numeric" })}
+                  {fmtDate(a.detail.followUpDate.slice(0, 10), {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
                 </p>
               )}
             </div>
           )}
 
           {a.status === "cancelled" && a.cancelReason && (
-            <p className="mt-3 text-sm text-[#1F1A15]/55">Reason: {a.cancelReason}</p>
+            <p className="mt-3 text-sm text-[#1F1A15]/55">
+              Reason: {a.cancelReason}
+            </p>
           )}
         </div>
 
         <div className="flex w-full gap-2 sm:w-auto sm:flex-col">
           {tab === "upcoming" && open && (
             <>
-              <Button variant="secondary" className="flex-1" disabled={!changeable} onClick={() => onReschedule(a)}>
+              <Button
+                variant="secondary"
+                className="flex-1"
+                disabled={!changeable}
+                onClick={() => onReschedule(a)}
+              >
                 Reschedule
               </Button>
-              <Button variant="danger" className="flex-1" disabled={!changeable} onClick={() => onCancel(a)}>
+              <Button
+                variant="danger"
+                className="flex-1"
+                disabled={!changeable}
+                onClick={() => onCancel(a)}
+              >
                 Cancel
               </Button>
             </>
           )}
           {tab !== "upcoming" && (
-            <Button variant="secondary" className="flex-1" onClick={() => onBookAgain(a)}>
+            <Button
+              variant="secondary"
+              className="flex-1"
+              onClick={() => onBookAgain(a)}
+            >
               Book again
             </Button>
           )}
         </div>
       </div>
 
-      {tab === "upcoming" && open && !changeable && a.status !== "in_progress" && (
-        <p className="mt-4 text-xs text-[#1F1A15]/50">
-          Within {CUTOFF_HOURS} hours of your visit, please call the clinic to make changes.
-        </p>
-      )}
+      {tab === "upcoming" &&
+        open &&
+        !changeable &&
+        a.status !== "in_progress" && (
+          <p className="mt-4 text-xs text-[#1F1A15]/50">
+            Within {CUTOFF_HOURS} hours of your visit, please call the clinic to
+            make changes.
+          </p>
+        )}
     </Card>
   );
 }

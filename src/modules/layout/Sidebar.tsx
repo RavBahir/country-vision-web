@@ -43,10 +43,10 @@ const NAV: ISidebarNav[] = [
     icon: CalendarCheck,
     isUserOnly: true,
   },
-  { href: allRoutes.CHECKUPS, label: "Checkups", icon: Eye , isComingSoon: true},
+  { href: allRoutes.CHECKUPS, label: "Checkups", icon: Eye, isCustomerOnly: true },
   { href: allRoutes.CATALOG, label: "Catalog", icon: Glasses , isComingSoon: true},
   { href: allRoutes.TRANSACTIONS, label: "Transactions", icon: Receipt, isComingSoon: true},
-  { href: allRoutes.CALENDAR, label: "Calendar", icon: CalendarDays , isComingSoon: true},
+  { href: allRoutes.CALENDAR, label: "Calendar", icon: CalendarDays },
   {
     href: allRoutes.CUSTOMERS,
     label: "Customers",
