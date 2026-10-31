@@ -1,4 +1,5 @@
 import { CButton, IFrame, Photo, Reveal } from "@/app/common";
+import { allRoutes } from "@/routes/routes";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 const FRAMES: IFrame[] = [
@@ -57,7 +58,7 @@ function Eyewear() {
             </p>
           </Reveal>
           <Reveal delay={150} direction="left">
-            <CButton href="#contact" dark={false}>
+            <CButton href={allRoutes.LOGIN} dark={false}>
               Explore Our Frames <ArrowRight size={14} />
             </CButton>
           </Reveal>

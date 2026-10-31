@@ -1,4 +1,5 @@
 import { Heading, ILensFeature, Photo, Reveal } from "@/app/common";
+import { allRoutes } from "@/routes/routes";
 import { Contrast, Minus, Monitor, Plus, Ruler, ShieldCheck, Sparkles, Sun } from "lucide-react";
 import { useState } from "react";
 
@@ -93,7 +94,7 @@ function Lenses() {
           </ul>
           <Reveal delay={200}>
             <a
-              href="#contact"
+              href={allRoutes.LOGIN}
               className="mt-7 inline-block rounded-full bg-[#FAF5EE] px-5 py-3 text-sm font-medium text-[#1F1A15] transition-transform duration-200 active:scale-[0.98]"
             >
               Explore Lens Options

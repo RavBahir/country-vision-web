@@ -1,4 +1,5 @@
 import { CButton, Heading, IReason, IStep, Photo, Reveal } from "@/app/common";
+import { allRoutes } from "@/routes/routes";
 import { ArrowRight, Clock, MapPin } from "lucide-react";
 
 const REASONS: IReason[] = [
@@ -85,7 +86,7 @@ function About() {
                 simply due for a routine checkup, take the first step today.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <CButton href="#contact" dark={false} className="bg-[#FAF5EE]!">
+                <CButton href={allRoutes.LOGIN} dark={false} className="bg-[#FAF5EE]!">
                   Book Eye Checkup <ArrowRight size={14} />
                 </CButton>
                 <a

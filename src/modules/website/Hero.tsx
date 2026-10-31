@@ -1,4 +1,5 @@
 import { ButtonProps, CountUp, MaskLine, Photo, Reveal, IStat } from "@/app/common";
+import { allRoutes } from "@/routes/routes";
 import { ArrowRight, BadgeCheck, CalendarCheck, Eye, Glasses } from "lucide-react";
 
 function Button({ href, dark = true, children, className = "" }: ButtonProps) {
@@ -49,7 +50,7 @@ function Hero() {
           </Reveal>
           <Reveal delay={720}>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Button href="#contact">
+              <Button href={allRoutes.LOGIN}>
                 Book an Eye Checkup <ArrowRight size={16} />
               </Button>
               <Button href="#eyewear" dark={false}>
@@ -114,7 +115,7 @@ function Hero() {
                     <b className="block text-sm font-medium">Tomorrow 9:30</b>
                   </span>
                   <a
-                    href="#contact"
+                    href={allRoutes.LOGIN}
                     className="rounded-full bg-white px-3 py-1.5 text-xs font-medium text-[#1F1A15]"
                   >
                     Book
