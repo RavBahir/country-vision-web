@@ -2,6 +2,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { WHATSAPP_LINK } from "@/lib/constants";
 import { allRoutes } from "@/routes/routes";
 import {
+  Building,
   CalendarCheck,
   CalendarDays,
   Eye,
@@ -59,6 +60,7 @@ const NAV: ISidebarNav[] = [
   },
   { href: allRoutes.USERS, label: "Users", icon: User2, isUserOnly: true },
   { href: allRoutes.ROLES, label: "Roles", icon: UserRoundKey, isUserOnly: true },
+  { href: allRoutes.ORGANIZATION, label: "Company Profile", icon: Building, isUserOnly: true },
   { href: allRoutes.AUDIT, label: "Audit Trail", icon: ShieldAlert, isUserOnly: true },
 ];
 
