@@ -6,15 +6,25 @@ import { FormError, SelectField } from "@/components/portal/FormFields";
 import { fmtTime, toISO } from "@/lib/format";
 import { useGetCustomers } from "@/modules/customers/common/customers-api";
 import {
-  useOptometrists, useStaffAvailability, useStaffBook, useStaffBranches, useStaffUpdate,
+  useOptometrists,
+  useStaffAvailability,
+  useStaffBook,
+  useStaffBranches,
+  useStaffUpdate,
 } from "@/modules/appointments/common/staff-api";
 import type { ApptType } from "@/modules/appointments/common/appointments";
 import type { IStaffAppointment } from "@/modules/appointments/common/staff";
 import { useMemo, useState, type FormEvent } from "react";
 import { TYPE_OPTIONS } from "./common";
+import {
+  AsyncSelect,
+  SelectOption,
+} from "@/components/portal/pickers/AsyncSelect";
 
 export default function StaffBookingModal({
-  initial, onClose, onSaved,
+  initial,
+  onClose,
+  onSaved,
 }: {
   /** null = new booking, an appointment = reschedule */
   initial: IStaffAppointment | null;
@@ -25,7 +35,9 @@ export default function StaffBookingModal({
   const [customerId, setCustomerId] = useState(initial?.customerId ?? "");
   const [branchId, setBranchId] = useState(initial?.branchId ?? "");
   const [type, setType] = useState<ApptType>(initial?.type ?? "eye_checkup");
-  const [optometristId, setOptometristId] = useState(initial?.optometristId ?? "");
+  const [optometristId, setOptometristId] = useState(
+    initial?.optometristId ?? "",
+  );
   const [date, setDate] = useState(initial?.date ?? "");
   const [time, setTime] = useState(initial?.time ?? "");
   const [notes, setNotes] = useState(initial?.notes ?? "");
@@ -34,7 +46,9 @@ export default function StaffBookingModal({
   const { data: branches = [] } = useStaffBranches();
   const { data: optos = [] } = useOptometrists(branchId || undefined);
   const { data: avail, isFetching } = useStaffAvailability(
-    date, branchId || undefined, optometristId || undefined,
+    date,
+    branchId || undefined,
+    optometristId || undefined,
   );
 
   const book = useStaffBook();
@@ -45,6 +59,8 @@ export default function StaffBookingModal({
     () => customers.filter((c) => (c.status ?? "active") === "active"),
     [customers],
   );
+
+  const [customer, setCustomer] = useState<SelectOption | null>(null);
 
   const slots = avail?.slots ?? [];
   const closed = Boolean(avail?.closed);
@@ -78,12 +94,18 @@ export default function StaffBookingModal({
           customerId,
           branchId: branchId || undefined,
           optometristId: optometristId || undefined,
-          type, date, time,
+          type,
+          date,
+          time,
           notes: notes.trim() || null,
         },
         {
           onSuccess: () =>
-            onSaved(optometristId ? "Appointment booked and approved." : "Appointment booked. Assign an optometrist to approve it."),
+            onSaved(
+              optometristId
+                ? "Appointment booked and approved."
+                : "Appointment booked. Assign an optometrist to approve it.",
+            ),
         },
       );
     }
@@ -96,7 +118,13 @@ export default function StaffBookingModal({
       title={isEdit ? "Reschedule appointment" : "Book an appointment"}
       footer={
         <div className="flex justify-end gap-3">
-          <Button variant="secondary" onClick={onClose} disabled={mutation.isPending}>Cancel</Button>
+          <Button
+            variant="secondary"
+            onClick={onClose}
+            disabled={mutation.isPending}
+          >
+            Cancel
+          </Button>
           <Button type="submit" form="staff-booking-form" disabled={!canSubmit}>
             {mutation.isPending ? "Saving…" : isEdit ? "Save changes" : "Book"}
           </Button>
@@ -105,15 +133,37 @@ export default function StaffBookingModal({
     >
       <form id="staff-booking-form" onSubmit={submit} className="grid gap-5">
         {isEdit ? (
-          <p className="text-[15px]"><b>{initial!.customer.name}</b> · {initial!.customer.code}</p>
+          <p className="text-[15px]">
+            <b>{initial!.customer.name}</b> · {initial!.customer.code}
+          </p>
         ) : (
-          <SelectField
+          <AsyncSelect
             label="Customer"
-            value={customerId}
-            onChange={setCustomerId}
-            options={activeCustomers.map((c) => ({ value: c.id, label: `${c.name} · ${c.code}` }))}
-            placeholder="Select a customer"
-            required
+            placeholder="Search by name, email or code"
+            value={customer}
+            onChange={(option: SelectOption | null) => {
+              setCustomer(option);
+              setCustomerId(option?.value ?? "");
+            }}
+            cacheKey={customers.length}
+            loadOptions={async (q) => {
+              const needle = q.toLowerCase();
+              return customers
+                .filter((c) => (c.status ?? "active") === "active")
+                .filter(
+                  (c) =>
+                    !needle ||
+                    `${c.name} ${c.email} ${c.code}`
+                      .toLowerCase()
+                      .includes(needle),
+                )
+                .slice(0, 20)
+                .map((c) => ({
+                  value: c.id,
+                  label: c.name,
+                  hint: `${c.code} · ${c.email}`,
+                }));
+            }}
           />
         )}
 
@@ -121,7 +171,11 @@ export default function StaffBookingModal({
           <SelectField
             label="Branch"
             value={branchId}
-            onChange={(v) => { setBranchId(v); setOptometristId(""); setTime(""); }}
+            onChange={(v) => {
+              setBranchId(v);
+              setOptometristId("");
+              setTime("");
+            }}
             options={branches.map((b) => ({ value: b.id, label: b.name }))}
             placeholder="Select a branch"
             required
@@ -138,7 +192,10 @@ export default function StaffBookingModal({
         <SelectField
           label="Optometrist"
           value={optometristId}
-          onChange={(v) => { setOptometristId(v); setTime(""); }}
+          onChange={(v) => {
+            setOptometristId(v);
+            setTime("");
+          }}
           options={optos.map((o) => ({ value: o.id, label: o.name }))}
           placeholder="Assign later"
           hint="Choosing one books the appointment as approved."
@@ -146,13 +203,26 @@ export default function StaffBookingModal({
         />
 
         <div>
-          <label htmlFor="sb-date" className="mb-2 block text-sm font-medium">Date</label>
+          <label htmlFor="sb-date" className="mb-2 block text-sm font-medium">
+            Date
+          </label>
           <input
-            id="sb-date" type="date" required min={toISO(new Date())}
-            value={date} onChange={(e) => { setDate(e.target.value); setTime(""); }}
+            id="sb-date"
+            type="date"
+            required
+            min={toISO(new Date())}
+            value={date}
+            onChange={(e) => {
+              setDate(e.target.value);
+              setTime("");
+            }}
             className={inputCls}
           />
-          {closed && <p className="mt-2 text-sm text-[#8E3524]">The clinic is closed that day.</p>}
+          {closed && (
+            <p className="mt-2 text-sm text-[#8E3524]">
+              The clinic is closed that day.
+            </p>
+          )}
         </div>
 
         <fieldset disabled={!date || closed}>
@@ -163,14 +233,19 @@ export default function StaffBookingModal({
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
               {slots.map((s) => {
                 const on = time === s.time;
-                const own = isEdit && initial!.date === date && initial!.time === s.time;
+                const own =
+                  isEdit && initial!.date === date && initial!.time === s.time;
                 return (
                   <button
-                    key={s.time} type="button" aria-pressed={on}
+                    key={s.time}
+                    type="button"
+                    aria-pressed={on}
                     disabled={!s.available && !own}
                     onClick={() => setTime(s.time)}
                     className={`rounded-full border px-3 py-2.5 text-sm transition-colors disabled:cursor-not-allowed disabled:line-through disabled:opacity-40 ${
-                      on ? "border-[#1F1A15] bg-[#1F1A15] text-white" : "border-[#E6D9C6] bg-white hover:bg-[#F1E7D8]"
+                      on
+                        ? "border-[#1F1A15] bg-[#1F1A15] text-white"
+                        : "border-[#E6D9C6] bg-white hover:bg-[#F1E7D8]"
                     }`}
                   >
                     {fmtTime(s.time)}
@@ -179,7 +254,11 @@ export default function StaffBookingModal({
               })}
             </div>
           )}
-          {!date && <p className="mt-2 text-xs text-[#1F1A15]/50">Choose a date to see available times.</p>}
+          {!date && (
+            <p className="mt-2 text-xs text-[#1F1A15]/50">
+              Choose a date to see available times.
+            </p>
+          )}
         </fieldset>
 
         <div>
@@ -187,7 +266,10 @@ export default function StaffBookingModal({
             Notes <span className="text-[#1F1A15]/45">(optional)</span>
           </label>
           <textarea
-            id="sb-notes" rows={3} maxLength={500} value={notes}
+            id="sb-notes"
+            rows={3}
+            maxLength={500}
+            value={notes}
             onChange={(e) => setNotes(e.target.value)}
             className={`${inputCls} h-auto py-3`}
           />
