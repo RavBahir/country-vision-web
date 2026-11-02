@@ -30,6 +30,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useSelfCreateCustomer } from "@/modules/customers/common/customers-api";
 import { showToast } from "@/components/CustomToast";
+import Link from "next/link";
 
 /* ------------------------------------------------------------------ */
 /* Small building blocks                                               */
@@ -82,7 +83,7 @@ export function InputField({
   );
 }
 
-function PasswordField({
+export function PasswordField({
   label = "Password",
   name = "password",
   autoComplete,
@@ -143,7 +144,6 @@ function AuthCard() {
     setStatus(null);
   };
 
-  
   const proceedToSignUp = ({
     email,
     onError,
@@ -160,7 +160,7 @@ function AuthCard() {
         name: String(form.get("name") ?? "").trim(),
         email,
         phone1: String(form.get("phone") ?? "").trim(),
-        password : password,
+        password: password,
       },
       {
         onSuccess: () => {
@@ -175,7 +175,7 @@ function AuthCard() {
           });
           setMode("signin");
           setAccountType("customer");
-           proceedToLogin({ email, password, onError });
+          proceedToLogin({ email, password, onError });
         },
         onError,
       },
@@ -194,7 +194,7 @@ function AuthCard() {
   }) => {
     const login = accountType === "customer" ? loginCustomer : loginUser;
     login.mutate(
-      { email, password },
+      { email, password, remember },
       {
         onSuccess: () => {
           // Adjust these routes to your app
@@ -231,11 +231,11 @@ function AuthCard() {
 
     if (!isSignIn) {
       proceedToSignUp({ email, password, onError, form });
+      return;
     }
 
     proceedToLogin({ email, password, onError });
   };
-
 
   return (
     <section
@@ -322,9 +322,25 @@ function AuthCard() {
           autoComplete={isSignIn ? "current-password" : "new-password"}
         />
 
-        {isSignIn &&
-          /* remember me + forgot password: unchanged */
-          null}
+        {isSignIn && (
+          <div className="flex items-center justify-between gap-3 text-sm">
+            <label className="flex cursor-pointer items-center gap-3">
+              <input
+                type="checkbox"
+                checked={remember}
+                onChange={(e) => setRemember(e.target.checked)}
+                className="h-4 w-4 accent-[#1F1A15]"
+              />
+              Remember me
+            </label>
+            <Link
+              href={allRoutes.FORGOT_PASSWORD}
+              className="border-b border-[#8A6A4A]/50 font-medium"
+            >
+              Forgot password?
+            </Link>
+          </div>
+        )}
 
         <button
           type="submit"
@@ -354,11 +370,11 @@ function AuthCard() {
       </form>
 
       {/* alt methods */}
-      <div className="my-6 flex items-center gap-4 text-xs tracking-wide text-[#1F1A15]/55 uppercase">
+      {/* <div className="my-6 flex items-center gap-4 text-xs tracking-wide text-[#1F1A15]/55 uppercase">
         <span className="h-px flex-1 bg-[#E6D9C6]" /> or continue with{" "}
         <span className="h-px flex-1 bg-[#E6D9C6]" />
-      </div>
-      <div className="grid gap-3 sm:grid-cols-2">
+      </div> */}
+      {/* <div className="grid gap-3 sm:grid-cols-2">
         <button
           type="button"
           className="flex h-12 items-center justify-center gap-2.5 rounded-full border border-[#E6D9C6] bg-[#FBF6EE] text-[15px] font-medium hover:bg-[#F1E7D8]"
@@ -371,7 +387,7 @@ function AuthCard() {
         >
           <Globe size={18} /> Google
         </button>
-      </div>
+      </div> */}
 
       {/* nudge */}
       <div className="mt-6 flex items-start gap-4 rounded-2xl border border-[#E6D9C6] bg-[#FBF6EE] p-5">

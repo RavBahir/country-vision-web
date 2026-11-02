@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import AuthCard from "./AuthCard";
 import BrandPanel from "./BrandPanel";
+import { allRoutes } from "@/routes/routes";
 
 /* ------------------------------------------------------------------ */
 /* Content                                                             */
@@ -32,19 +33,19 @@ const ONCE_IN: {
     icon: CalendarCheck,
     title: "Book appointments",
     sub: "Eye checkups that fit your week",
-    href: "/#contact",
+    href: allRoutes.APPOINTMENTS,
   },
   {
     icon: Glasses,
     title: "Order spectacles",
     sub: "Shop frames with Rx on file",
-    href: "/#eyewear",
+    href: allRoutes.CATALOG,
   },
   {
     icon: Package,
     title: "Track orders",
     sub: "From lab to your door",
-    href: "/#contact",
+    href: allRoutes.CATALOG,
   },
 ];
 
@@ -101,7 +102,7 @@ export default function LoginPage() {
             {ONCE_IN.map((c) => (
               <li key={c.title}>
                 <Link
-                  href={c.href}
+                  href={allRoutes.PORTAL + c.href}
                   className="flex h-full items-start gap-5 rounded-3xl border border-[#E6D9C6] bg-white p-6 transition-shadow hover:shadow-md"
                 >
                   <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-[#E6D9C6] bg-[#F6EFE4]">
@@ -133,12 +134,12 @@ export default function LoginPage() {
               Signed in? Reorder lenses in one tap.
             </h2>
             <p className="mt-1 text-[15px] text-white/60">
-              Your last prescription (OD −1.50 · OS −1.25) is saved and ready at
+              Your last prescription is saved and ready at
               checkout.
             </p>
           </div>
           <Link
-            href="/#eyewear"
+            href={allRoutes.PORTAL + allRoutes.CATALOG}
             className="rounded-full bg-[#FAF5EE] px-7 py-3.5 text-[15px] font-medium text-[#1F1A15] hover:bg-white"
           >
             Start an order

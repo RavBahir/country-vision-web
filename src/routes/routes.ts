@@ -2,6 +2,7 @@
 export const allRoutes = Object.freeze({
   HOME: "/",
   LOGIN: "/login",
+  FORGOT_PASSWORD: "/forgot-password",
   PORTAL: "/portal",
   DASHBOARD: "/dashboard",
   APPOINTMENTS: "/appointments",

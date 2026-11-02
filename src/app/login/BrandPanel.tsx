@@ -47,13 +47,13 @@ function BrandPanel() {
           <span className="leading-none">
             <span className="block text-base font-semibold">{COMPANY_NAME}</span>
             <span className=" block text-xs tracking-[0.3em] text-white/70 uppercase">
-              Vision Care
+              Quality Vision Care
             </span>
           </span>
         </Link>
-        <span className="rounded-full border border-white/30 bg-black/20 px-4 py-2 text-sm font-medium backdrop-blur">
+        {/* <span className="rounded-full border border-white/30 bg-black/20 px-4 py-2 text-sm font-medium backdrop-blur">
           Patient Portal
-        </span>
+        </span> */}
       </div>
 
       <div className="relative mt-auto p-8 pt-40 sm:p-14 sm:pt-56">
