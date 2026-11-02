@@ -118,7 +118,7 @@ const TopNav = ({
             <CalendarDays size={17} />
           </button>
             </Link>
-        <div ref={bellRef} className="relative">
+        <div ref={bellRef} className="relative hidden">
           <button
             onClick={() => setBell((b) => !b)}
             aria-expanded={bell}

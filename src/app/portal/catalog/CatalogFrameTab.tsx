@@ -7,9 +7,9 @@ import {
 } from "@/components/portal/UI";
 import { Glasses, Search } from "lucide-react";
 import { SetStateAction } from "react";
-import { IFrameTab, ISort } from "./common";
 import { money } from "@/lib/format";
-import { Frame } from "@/lib/portal-data";
+import { IFrameTab, ISort } from "./common";
+import type { IFrame } from "@/modules/catalog/common/catalog";
 
 const CatalogFrameTab = ({
   setSort,
@@ -31,8 +31,8 @@ const CatalogFrameTab = ({
   sort: ISort;
   tab: IFrameTab;
   setQuery: (value: SetStateAction<string>) => void;
-  setCustomizing: (value: SetStateAction<Frame | null>) => void;
-  frames: Frame[];
+  setCustomizing: (value: SetStateAction<IFrame | null>) => void;
+  frames: IFrame[];
 }) => {
   return (
     <>
@@ -118,7 +118,7 @@ const CatalogFrameTab = ({
                       <Badge>{f.shape}</Badge>
                       <h2 className="mt-3 font-semibold">{f.name}</h2>
                       <p className="mt-1 flex-1 text-sm text-[#1F1A15]/55">
-                        {f.blurb}
+                        {f.blurb ?? ""}
                       </p>
                       <div
                         className="mt-4 flex items-center gap-1.5"
@@ -126,7 +126,7 @@ const CatalogFrameTab = ({
                       >
                         {f.colors.map((c) => (
                           <span
-                            key={c.name}
+                            key={c.id}
                             title={c.name}
                             className="h-4 w-4 rounded-full border border-black/10"
                             style={{ backgroundColor: c.hex }}
