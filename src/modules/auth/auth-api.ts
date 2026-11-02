@@ -55,9 +55,6 @@ export const loginApi = {
     }),
 };
 
-const saveToken = (res: { accessToken?: string }) => {
-  if (res.accessToken) tokenStorage.set(res.accessToken);
-};
 
 export function useLoginUser() {
   const queryClient = useQueryClient();
@@ -98,5 +95,17 @@ export function useResetUserOTP() {
 export function useVerifyResetUserOTP() {
   return useMutation<IResetResponse, Error, IVerifyPasswordResetPayload>({
     mutationFn: loginApi.verifyResetUserOTP,
+  });
+}
+
+export function useResetCustomerOTP() {
+  return useMutation<IResetResponse, Error, IResetPayload>({
+    mutationFn: loginApi.sendResetCustomerOTP,
+  });
+}
+
+export function useVerifyResetCustomerOTP() {
+  return useMutation<IResetResponse, Error, IVerifyPasswordResetPayload>({
+    mutationFn: loginApi.verifyResetCustomerOTP,
   });
 }
